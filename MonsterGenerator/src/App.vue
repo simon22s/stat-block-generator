@@ -1,30 +1,7 @@
 <template>
     <v-app>
         <div class="d-flex align-center flex-column">
-            <v-card width="50%" class="pa-8 mb-8">
-                <v-row>
-                    <v-col class="d-flex">
-                        <v-text-field v-model="partySize" type="number"></v-text-field>
-                        <span> Players of Level </span>
-                        <v-text-field v-model="partyLevel" type="number"></v-text-field>
-                    </v-col>
-                    <v-col>
-                        <span>Threat Budget: {{threatBudget}}</span>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="d-flex">
-                        <span>
-                            Encounter Difficulty:
-                        </span>
-                        <v-combobox v-model="encounterDiff" :items="['Trivial', 'Easy', 'Normal', 'Hard', 'Extreme']">
-                        </v-combobox>
-                    </v-col>
-                    <v-col>
-                        <span>The current creature has an adjusted Threat Level of {{adjustedThreatLevel}}</span>
-                    </v-col>
-                </v-row>
-            </v-card>
+            <ThreatCalculator :level="level" :threatLevel="threatLevel"></ThreatCalculator>
             <v-card width="90%" class="pa-8">
                 <v-row>
                     <v-col cols="8">
@@ -168,13 +145,14 @@ import { Rank } from './enums/Rank';
 import { CombatRole } from './enums/CombatRole';
 import { AbilityLevel } from './enums/AbilityLevel';
 import InputData from './models/InputData';
-import ThreatCalculator, { EncounterDifficulty } from './services/ThreatCalculator';
+import ThreatCalculator from './components/ThreatCalculator.vue';
 import GeneratedOutput from './components/GeneratedOutput.vue';
 
 export default defineComponent({
     name: 'App',
     components: {
         GeneratedOutput,
+        ThreatCalculator
     },
     data() {
         return {
@@ -209,9 +187,6 @@ export default defineComponent({
                 { value: AbilityLevel.High, text: 'High' }
             ],
             selectedSaves: [],
-            encounterDiff: 'Normal',
-            partySize: 1,
-            partyLevel: 1,
             skills: [],
             skillItems: ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature'
                , 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight of Hand', 'Stealth', 'Survival']
@@ -236,12 +211,6 @@ export default defineComponent({
         },
         isThreatLevelDisabled() {
             return this.rank != Rank.Paragon;
-        },
-        threatBudget() {
-            return ThreatCalculator.calcThreatBudget(this.partySize, this.encounterDiff as EncounterDifficulty);
-        },
-        adjustedThreatLevel() {
-            return ThreatCalculator.calcAdjustedThreatLevel(this.level, this.threatLevel, this.partyLevel);
         },
         numTrainedSavingThrows() {
             let baseSavingThrows = 1;
