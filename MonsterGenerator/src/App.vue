@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <div class="d-flex align-center flex-column">
-            <v-card width="60%" class="pa-8 mb-8">
+            <v-card width="50%" class="pa-8 mb-8">
                 <v-row>
                     <v-col class="d-flex">
                         <v-text-field v-model="partySize" type="number"></v-text-field>
@@ -27,7 +27,7 @@
             </v-card>
             <v-card width="80%" class="pa-8">
                 <v-row>
-                    <v-col>
+                    <v-col cols="8">
                         <v-container>
                             <v-row>
                                 <v-col cols="8">
@@ -62,34 +62,85 @@
                                 </v-col>
                             </v-row>
                             <v-row>
+                                <v-table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-center">
+                                                STR
+                                            </th>
+                                            <th class="text-center">
+                                                DEX
+                                            </th>
+                                            <th class="text-center">
+                                                CON
+                                            </th>
+                                            <th class="text-center">
+                                                INT
+                                            </th>
+                                            <th class="text-center">
+                                                WIS
+                                            </th>
+                                            <th class="text-center">
+                                                CHA
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                Modifiers
+                                            </td>
+                                            <td>
+                                                <v-combobox v-model="strAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                            </td>
+                                            <td>
+                                                <v-combobox v-model="dexAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                            </td>
+                                            <td>
+                                                <v-combobox v-model="conAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                            </td>
+                                            <td>
+                                                <v-combobox v-model="intAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                            </td>
+                                            <td>
+                                                <v-combobox v-model="wisAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                            </td>
+                                            <td>
+                                                <v-combobox v-model="chaAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>TSTs</div> <div>(Max {{numTrainedSavingThrows}})</div>
+                                            </td>
+                                            <td>
+                                                <v-checkbox v-model="selectedSaves" value="Strength" hide-details></v-checkbox>
+                                            </td>
+                                            <td>
+                                                <v-checkbox v-model="selectedSaves" value="Dexterity" hide-details></v-checkbox>
+                                            </td>
+                                            <td>
+                                                <v-checkbox v-model="selectedSaves" value="Constitution" hide-details></v-checkbox>
+                                            </td>
+                                            <td>
+                                                <v-checkbox v-model="selectedSaves" value="Intelligence" hide-details></v-checkbox>
+                                            </td>
+                                            <td>
+                                                <v-checkbox v-model="selectedSaves" value="Wisdom" hide-details></v-checkbox>
+                                            </td>
+                                            <td>
+                                                <v-checkbox v-model="selectedSaves" value="Charisma" hide-details></v-checkbox>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </v-table>
+                            </v-row>
+                            <v-row>
                                 <v-container>
-                                    <span>Attributes</span>
-                                    <v-row>
-                                        <v-col>
-                                            <span>STR</span>
-                                            <v-combobox v-model="strAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                        </v-col>
-                                        <v-col>
-                                            <span>DEX</span>
-                                            <v-combobox v-model="dexAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                        </v-col>
-                                        <v-col>
-                                            <span>CON</span>
-                                            <v-combobox v-model="conAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                        </v-col>
-                                        <v-col>
-                                            <span>INT</span>
-                                            <v-combobox v-model="intAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                        </v-col>
-                                        <v-col>
-                                            <span>WIS</span>
-                                            <v-combobox v-model="wisAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                        </v-col>
-                                        <v-col>
-                                            <span>CHA</span>
-                                            <v-combobox v-model="chaAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                        </v-col>
-                                    </v-row>
+                                    <span>Trained Saving Throws</span>
+                                    
+                                    <v-checkbox label="Strength"></v-checkbox>
                                 </v-container>
                             </v-row>
                         </v-container>
@@ -150,6 +201,7 @@ export default defineComponent({
                 { value: AttributePreference.Medium, text: 'Medium' },
                 { value: AttributePreference.High, text: 'High' }
             ],
+            selectedSaves: [],
             encounterDiff: 'Normal',
             partySize: 1,
             partyLevel: 1
@@ -178,6 +230,27 @@ export default defineComponent({
         },
         adjustedThreatLevel() {
             return ThreatCalculator.calcAdjustedThreatLevel(this.level, this.threatLevel, this.partyLevel);
+        },
+        numTrainedSavingThrows() {
+            let baseSavingThrows = 1;
+            switch (this.rank) {
+                case Rank.Grunt:
+                    baseSavingThrows = 2;
+                    break;
+                case Rank.Elite:
+                case Rank.Paragon:
+                    baseSavingThrows = 3;
+                    break;
+            }
+            switch (this.role) {
+                case CombatRole.Defender:
+                    baseSavingThrows += 1;
+                    break;
+                case CombatRole.Lurker:
+                    baseSavingThrows -= 1;
+                    break;
+            }
+            return baseSavingThrows;
         }
     },
     watch: {
@@ -211,6 +284,13 @@ export default defineComponent({
                     this.threatLevel = 2;
                     break;
             }
+            this.updateSelectedSaves();
+        },
+        role() {
+            this.updateSelectedSaves();
+        },
+        selectedSaves() {
+            this.updateSelectedSaves();
         }
     },
     methods: {
@@ -246,6 +326,11 @@ export default defineComponent({
         },
         areAttributesBalanced() {
             return (this.strAttr + this.dexAttr + this.conAttr + this.intAttr + this.wisAttr + this.chaAttr == 6);
+        },
+        updateSelectedSaves() {
+            while (this.selectedSaves.length > this.numTrainedSavingThrows) {
+                this.selectedSaves.shift();
+            }
         }
     }
 });
