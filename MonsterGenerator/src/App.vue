@@ -124,6 +124,30 @@
                                                     multiple
                                                     chips>
                                         </v-combobox>
+                                        <v-combobox v-model="damageVulnerabilities"
+                                                    :items="damageItems"
+                                                    label="Damage Vulnerabilities"
+                                                    multiple
+                                                    chips>
+                                        </v-combobox>
+                                        <v-combobox v-model="damageResistances"
+                                                    :items="damageItems"
+                                                    label="Damage Resistances"
+                                                    multiple
+                                                    chips>
+                                        </v-combobox>
+                                        <v-combobox v-model="damageImmunities"
+                                                    :items="damageItems"
+                                                    label="Damage Immunities"
+                                                    multiple
+                                                    chips>
+                                        </v-combobox>
+                                        <v-combobox v-model="conditionImmunities"
+                                                    :items="conditionItems"
+                                                    label="Condition Immunities"
+                                                    multiple
+                                                    chips>
+                                        </v-combobox>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
                             </v-expansion-panels>
@@ -147,6 +171,9 @@ import { AbilityLevel } from './enums/AbilityLevel';
 import InputData from './models/InputData';
 import ThreatCalculator from './components/ThreatCalculator.vue';
 import GeneratedOutput from './components/GeneratedOutput.vue';
+import { Skills } from './enums/Skill';
+import { DamageTypes } from './enums/DamageType';
+import { Conditions } from './enums/Conditions';
 
 export default defineComponent({
     name: 'App',
@@ -188,8 +215,13 @@ export default defineComponent({
             ],
             selectedSaves: [],
             skills: [],
-            skillItems: ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature'
-               , 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight of Hand', 'Stealth', 'Survival']
+            skillItems: Skills,
+            damageVulnerabilities: [],
+            damageResistances: [],
+            damageImmunities: [],
+            damageItems: DamageTypes,
+            conditionImmunities: [],
+            conditionItems: Conditions
         }
     },
     computed: {
@@ -207,6 +239,10 @@ export default defineComponent({
             curr.threatLevel = this.threatLevel;
             curr.trainedSavingThrows = this.selectedSaves;
             curr.skills = this.skills;
+            curr.damageVulnerabilities = this.damageVulnerabilities;
+            curr.damageResistances = this.damageResistances;
+            curr.damageImmunities = this.damageImmunities;
+            curr.conditionImmunities = this.conditionImmunities;
             return curr;
         },
         isThreatLevelDisabled() {

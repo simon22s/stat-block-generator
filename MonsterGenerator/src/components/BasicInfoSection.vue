@@ -7,26 +7,30 @@
             </v-row>
             <v-row>
                 <v-col class="text-left">
-                    <span>Armor Class: </span>
+                    <span class="mr-1 font-weight-bold">Armor Class</span>
                     <span>{{statBlock.armorClass}}</span>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="text-left">
-                    <span>HP: </span>
+                    <span class="mr-1 font-weight-bold">HP</span>
                     <span>{{statBlock.hp}}</span>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="text-left">
-                    <span>Speed: </span>
+                    <span class="mr-1 font-weight-bold">Speed</span>
                     <span>{{statBlock.speed}} ft.</span>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="text-left">
-                    <span>Average DMG Per Action: </span>
+                    <span class="mr-1 font-weight-bold">Average DMG Per Action</span>
                     <span>{{statBlock.atkDamage}}</span>
+                </v-col>
+                <v-col class="text-right">
+                    <span class="mr-1 font-weight-bold">Proficiency Bonus</span>
+                    <span>+{{statBlock.profBonus}}</span>
                 </v-col>
             </v-row>
       </v-container>

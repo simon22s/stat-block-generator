@@ -2,6 +2,8 @@ import { CombatRole } from '../enums/CombatRole'
 import { Rank } from '../enums/Rank'
 import { AbilityLevel } from '../enums/AbilityLevel'
 import { Skill } from '../enums/Skill'
+import { DamageType } from '../enums/DamageType';
+import { Condition } from '../enums/Conditions';
 
 export default class InputData {
     public level: number = 1;
@@ -19,4 +21,8 @@ export default class InputData {
     public trainedSavingThrows: string[] = [];
 
     public skills: Skill[] = [];
+    public damageVulnerabilities: DamageType[] = [];
+    public damageResistances: DamageType[] = [];
+    public damageImmunities: DamageType[] = [];
+    public conditionImmunities: Condition[] = [];
 }

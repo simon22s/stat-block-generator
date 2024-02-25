@@ -25,6 +25,10 @@ export default class StatBlock {
     public trainedSavingThrows: string[] = [];
 
     public skills: string[] = [];
+    public damageVulnerabilities: string[] = [];
+    public damageResistances: string[] = [];
+    public damageImmunities: string[] = [];
+    public conditionImmunities: string[] = [];
 
     public threat: number = 1;
 
@@ -65,6 +69,10 @@ export default class StatBlock {
             baseSaveDC: 8 + profBonus,
             trainedSavingThrows: [],
             skills: [],
+            damageVulnerabilities: input.damageVulnerabilities,
+            damageResistances: input.damageResistances,
+            damageImmunities: input.damageImmunities,
+            conditionImmunities: input.conditionImmunities,
             threat: input.threatLevel
         };
     }

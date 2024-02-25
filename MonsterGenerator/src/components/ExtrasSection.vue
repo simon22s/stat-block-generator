@@ -1,19 +1,51 @@
 <template>
       <v-container>
           <v-row v-if="statBlock.trainedSavingThrows.length > 0">
-              <span class="ml-1">Saving Throws</span>
+              <span class="mr-1 font-weight-bold">Saving Throws</span>
               <span v-for="(savingThrow, index) in statBlock.trainedSavingThrows" 
                     :key="savingThrow"
-                    class="ml-1">
+                    class="mr-1">
               {{savingThrow}}{{index + 1 != statBlock.trainedSavingThrows.length ? ', ' : ''}}
               </span>
           </v-row>
           <v-row v-if="statBlock.skills.length > 0">
-              <span class="ml-1">Skills</span>
+              <span class="mr-1 font-weight-bold">Skills</span>
               <span v-for="(skill, index) in statBlock.skills" 
                     :key="skill"
-                    class="ml-1">
+                    class="mr-1">
               {{skill}}{{index + 1 != statBlock.skills.length ? ', ' : ''}}
+              </span>
+          </v-row>
+          <v-row v-if="statBlock.damageVulnerabilities.length > 0">
+              <span class="mr-1 font-weight-bold">Damage Vulnerabilities</span>
+              <span v-for="(damageVuln, index) in statBlock.damageVulnerabilities"
+                    :key="damageVuln"
+                    class="mr-1">
+                  {{damageVuln}}{{index + 1 != statBlock.damageVulnerabilities.length ? ', ' : ''}}
+              </span>
+          </v-row>
+          <v-row v-if="statBlock.damageResistances.length > 0">
+              <span class="mr-1 font-weight-bold">Damage Resistances</span>
+              <span v-for="(damageRes, index) in statBlock.damageResistances"
+                    :key="damageRes"
+                    class="mr-1">
+                  {{damageRes}}{{index + 1 != statBlock.damageResistances.length ? ', ' : ''}}
+              </span>
+          </v-row>
+          <v-row v-if="statBlock.damageImmunities.length > 0">
+              <span class="mr-1 font-weight-bold">Damage Immunities</span>
+              <span v-for="(damageImm, index) in statBlock.damageImmunities"
+                    :key="damageImm"
+                    class="mr-1">
+                  {{damageImm}}{{index + 1 != statBlock.damageImmunities.length ? ', ' : ''}}
+              </span>
+          </v-row>
+          <v-row v-if="statBlock.conditionImmunities.length > 0">
+              <span class="mr-1 font-weight-bold">Damage Resistances</span>
+              <span v-for="(condition, index) in statBlock.conditionImmunities"
+                    :key="condition"
+                    class="mr-1">
+                  {{condition}}{{index + 1 != statBlock.conditionImmunities.length ? ', ' : ''}}
               </span>
           </v-row>
       </v-container>
