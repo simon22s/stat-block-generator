@@ -1,6 +1,7 @@
 import { CombatRole } from '../enums/CombatRole'
 import { Rank } from '../enums/Rank'
 import { AbilityLevel } from '../enums/AbilityLevel'
+import { Skill } from '../enums/Skill'
 
 export default class InputData {
     public level: number = 1;
@@ -16,4 +17,6 @@ export default class InputData {
     public chaPref: AbilityLevel = AbilityLevel.Low;
 
     public trainedSavingThrows: string[] = [];
+
+    public skills: Skill[] = [];
 }

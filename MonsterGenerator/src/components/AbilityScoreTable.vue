@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import StatBlock from '../models/Monster';
+import StatBlock from '../models/StatBlock';
 
 export default defineComponent({
   name: 'BasicInfoSection',

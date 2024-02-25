@@ -8,12 +8,20 @@
               {{savingThrow}}{{index + 1 != statBlock.trainedSavingThrows.length ? ', ' : ''}}
               </span>
           </v-row>
+          <v-row v-if="statBlock.skills.length > 0">
+              <span class="ml-1">Skills</span>
+              <span v-for="(skill, index) in statBlock.skills" 
+                    :key="skill"
+                    class="ml-1">
+              {{skill}}{{index + 1 != statBlock.skills.length ? ', ' : ''}}
+              </span>
+          </v-row>
       </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import StatBlock from '../models/Monster';
+import StatBlock from '../models/StatBlock';
 
 export default defineComponent({
   name: 'ExtrasSection',

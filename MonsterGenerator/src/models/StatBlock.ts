@@ -2,6 +2,7 @@ import { Ability } from '../enums/Ability'
 import { AbilityLevel } from '../enums/AbilityLevel';
 import { CombatRole } from '../enums/CombatRole';
 import { Rank } from '../enums/Rank';
+import { SkillToAbilityMap } from '../enums/Skill';
 import InputData from './InputData';
 export default class StatBlock {
     public level: number = 1;
@@ -23,6 +24,8 @@ export default class StatBlock {
 
     public trainedSavingThrows: string[] = [];
 
+    public skills: string[] = [];
+
     public threat: number = 1;
 
     public static calcStatBlock(input: InputData): StatBlock {
@@ -33,6 +36,11 @@ export default class StatBlock {
         for (let i = 0; i < input.trainedSavingThrows.length; i++) {
             const ability: Ability = Ability[input.trainedSavingThrows[i] as keyof typeof Ability];
             statBlock.trainedSavingThrows.push(input.trainedSavingThrows[i].toString() + '+' + this.calcProfAbilityCheck(statBlock, ability));
+        }
+        
+        for (let i = 0; i < input.skills.length; i++) {
+            const ability: Ability = SkillToAbilityMap.convert(input.skills[i]);
+            statBlock.skills.push(input.skills[i] + '+' + this.calcProfAbilityCheck(statBlock, ability));
         }
         
         return statBlock;
@@ -56,11 +64,12 @@ export default class StatBlock {
             baseAtkBonus: profBonus,
             baseSaveDC: 8 + profBonus,
             trainedSavingThrows: [],
+            skills: [],
             threat: input.threatLevel
         };
     }
 
-    private static adjustStatBlockForRank(statBlock: StatBlock, rank: Rank) {
+    private static adjustStatBlockForRank(statBlock: StatBlock, rank: Rank): StatBlock {
         switch (rank) {
             case (Rank.Minion):
                 statBlock.hp * Math.floor(statBlock.hp * 0.2);
@@ -92,7 +101,7 @@ export default class StatBlock {
         return statBlock;
     }
 
-    private static adjustStatBlockForRole(statBlock: StatBlock, role: CombatRole) {
+    private static adjustStatBlockForRole(statBlock: StatBlock, role: CombatRole): StatBlock {
         switch (role) {
             case CombatRole.Controller:
                 statBlock.armorClass += 2;

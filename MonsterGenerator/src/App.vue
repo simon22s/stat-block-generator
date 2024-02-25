@@ -68,22 +68,22 @@
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th class="text-center">
+                                                    <th class="text-center" width="15%">
                                                         STR
                                                     </th>
-                                                    <th class="text-center">
+                                                    <th class="text-center" width="15%">
                                                         DEX
                                                     </th>
-                                                    <th class="text-center">
+                                                    <th class="text-center" width="15%">
                                                         CON
                                                     </th>
-                                                    <th class="text-center">
+                                                    <th class="text-center" width="15%">
                                                         INT
                                                     </th>
-                                                    <th class="text-center">
+                                                    <th class="text-center" width="15%">
                                                         WIS
                                                     </th>
-                                                    <th class="text-center">
+                                                    <th class="text-center" width="15%">
                                                         CHA
                                                     </th>
                                                 </tr>
@@ -137,6 +137,16 @@
                                                 </tr>
                                             </tbody>
                                         </v-table>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                                <v-expansion-panel title="Extras">
+                                    <v-expansion-panel-text>
+                                        <v-combobox v-model="skills"
+                                                    :items="skillItems"
+                                                    label="Skills"
+                                                    multiple
+                                                    chips>
+                                        </v-combobox>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
                             </v-expansion-panels>
@@ -201,7 +211,10 @@ export default defineComponent({
             selectedSaves: [],
             encounterDiff: 'Normal',
             partySize: 1,
-            partyLevel: 1
+            partyLevel: 1,
+            skills: [],
+            skillItems: ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature'
+               , 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight of Hand', 'Stealth', 'Survival']
         }
     },
     computed: {
@@ -218,6 +231,7 @@ export default defineComponent({
             curr.chaPref = this.chaAttr;
             curr.threatLevel = this.threatLevel;
             curr.trainedSavingThrows = this.selectedSaves;
+            curr.skills = this.skills;
             return curr;
         },
         isThreatLevelDisabled() {

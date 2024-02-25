@@ -24,7 +24,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import InputData from '../models/InputData';
-import StatBlock from '../models/Monster';
+import StatBlock from '../models/StatBlock';
 import ExtrasSection from '../components/ExtrasSection.vue';
 import BasicInfoSection from '../components/BasicInfoSection.vue';
 import AbilityScoreTable from '../components/AbilityScoreTable.vue';
@@ -44,7 +44,7 @@ export default defineComponent({
         AbilityScoreTable
     },
     computed: {
-        currStatBlock() {
+        currStatBlock(): StatBlock {
             return StatBlock.calcStatBlock(this.inputData);
         }
     }

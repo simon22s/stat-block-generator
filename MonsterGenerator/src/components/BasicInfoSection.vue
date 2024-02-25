@@ -23,12 +23,18 @@
                     <span>{{statBlock.speed}} ft.</span>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col class="text-left">
+                    <span>Average DMG Per Action: </span>
+                    <span>{{statBlock.atkDamage}}</span>
+                </v-col>
+            </v-row>
       </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import StatBlock from '../models/Monster';
+import StatBlock from '../models/StatBlock';
 
 export default defineComponent({
   name: 'BasicInfoSection',
