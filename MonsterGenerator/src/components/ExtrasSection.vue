@@ -1,10 +1,10 @@
 <template>
       <v-container>
-          <v-row>
-              <span class="ml-2">Saving Throws</span>
+          <v-row v-if="statBlock.trainedSavingThrows.length > 0">
+              <span class="ml-1">Saving Throws</span>
               <span v-for="(savingThrow, index) in statBlock.trainedSavingThrows" 
                     :key="savingThrow"
-                    class="ml-2">
+                    class="ml-1">
               {{savingThrow}}{{index + 1 != statBlock.trainedSavingThrows.length ? ', ' : ''}}
               </span>
           </v-row>

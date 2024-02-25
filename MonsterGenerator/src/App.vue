@@ -25,7 +25,7 @@
                     </v-col>
                 </v-row>
             </v-card>
-            <v-card width="80%" class="pa-8">
+            <v-card width="90%" class="pa-8">
                 <v-row>
                     <v-col cols="8">
                         <v-container>
@@ -61,88 +61,85 @@
                                     </v-slider>
                                 </v-col>
                             </v-row>
-                            <v-row>
-                                <v-table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th class="text-center">
-                                                STR
-                                            </th>
-                                            <th class="text-center">
-                                                DEX
-                                            </th>
-                                            <th class="text-center">
-                                                CON
-                                            </th>
-                                            <th class="text-center">
-                                                INT
-                                            </th>
-                                            <th class="text-center">
-                                                WIS
-                                            </th>
-                                            <th class="text-center">
-                                                CHA
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                Modifiers
-                                            </td>
-                                            <td>
-                                                <v-combobox v-model="strAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                            </td>
-                                            <td>
-                                                <v-combobox v-model="dexAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                            </td>
-                                            <td>
-                                                <v-combobox v-model="conAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                            </td>
-                                            <td>
-                                                <v-combobox v-model="intAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                            </td>
-                                            <td>
-                                                <v-combobox v-model="wisAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                            </td>
-                                            <td>
-                                                <v-combobox v-model="chaAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>TSTs</div> <div>(Max {{numTrainedSavingThrows}})</div>
-                                            </td>
-                                            <td>
-                                                <v-checkbox v-model="selectedSaves" value="Strength" hide-details></v-checkbox>
-                                            </td>
-                                            <td>
-                                                <v-checkbox v-model="selectedSaves" value="Dexterity" hide-details></v-checkbox>
-                                            </td>
-                                            <td>
-                                                <v-checkbox v-model="selectedSaves" value="Constitution" hide-details></v-checkbox>
-                                            </td>
-                                            <td>
-                                                <v-checkbox v-model="selectedSaves" value="Intelligence" hide-details></v-checkbox>
-                                            </td>
-                                            <td>
-                                                <v-checkbox v-model="selectedSaves" value="Wisdom" hide-details></v-checkbox>
-                                            </td>
-                                            <td>
-                                                <v-checkbox v-model="selectedSaves" value="Charisma" hide-details></v-checkbox>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </v-table>
-                            </v-row>
-                            <v-row>
-                                <v-container>
-                                    <span>Trained Saving Throws</span>
-                                    
-                                    <v-checkbox label="Strength"></v-checkbox>
-                                </v-container>
-                            </v-row>
+                            <v-expansion-panels>
+                                <v-expansion-panel title="Abilities & Saving Throws">
+                                    <v-expansion-panel-text>
+                                        <v-table>
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th class="text-center">
+                                                        STR
+                                                    </th>
+                                                    <th class="text-center">
+                                                        DEX
+                                                    </th>
+                                                    <th class="text-center">
+                                                        CON
+                                                    </th>
+                                                    <th class="text-center">
+                                                        INT
+                                                    </th>
+                                                    <th class="text-center">
+                                                        WIS
+                                                    </th>
+                                                    <th class="text-center">
+                                                        CHA
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        Modifiers
+                                                    </td>
+                                                    <td>
+                                                        <v-combobox v-model="strAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                                    </td>
+                                                    <td>
+                                                        <v-combobox v-model="dexAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                                    </td>
+                                                    <td>
+                                                        <v-combobox v-model="conAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                                    </td>
+                                                    <td>
+                                                        <v-combobox v-model="intAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                                    </td>
+                                                    <td>
+                                                        <v-combobox v-model="wisAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                                    </td>
+                                                    <td>
+                                                        <v-combobox v-model="chaAttr" :items="attrItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div>TSTs</div> <div>(Max {{numTrainedSavingThrows}})</div>
+                                                    </td>
+                                                    <td>
+                                                        <v-checkbox v-model="selectedSaves" value="Strength" hide-details></v-checkbox>
+                                                    </td>
+                                                    <td>
+                                                        <v-checkbox v-model="selectedSaves" value="Dexterity" hide-details></v-checkbox>
+                                                    </td>
+                                                    <td>
+                                                        <v-checkbox v-model="selectedSaves" value="Constitution" hide-details></v-checkbox>
+                                                    </td>
+                                                    <td>
+                                                        <v-checkbox v-model="selectedSaves" value="Intelligence" hide-details></v-checkbox>
+                                                    </td>
+                                                    <td>
+                                                        <v-checkbox v-model="selectedSaves" value="Wisdom" hide-details></v-checkbox>
+                                                    </td>
+                                                    <td>
+                                                        <v-checkbox v-model="selectedSaves" value="Charisma" hide-details></v-checkbox>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </v-table>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
                         </v-container>
                     </v-col>
                     <v-col>
