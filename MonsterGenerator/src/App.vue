@@ -156,10 +156,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Attribute } from './enums/Attribute';
+import { Ability } from './enums/Ability';
 import { Rank } from './enums/Rank';
 import { CombatRole } from './enums/CombatRole';
-import { AttributePreference } from './enums/AttributePreferences';
+import { AbilityLevel } from './enums/AbilityLevel';
 import InputData from './models/InputData';
 import ThreatCalculator, { EncounterDifficulty } from './services/ThreatCalculator';
 import GeneratedOutput from './components/GeneratedOutput.vue';
@@ -190,16 +190,16 @@ export default defineComponent({
                 { value: CombatRole.Striker, text: 'Striker' },
                 { value: CombatRole.Supporter, text: 'Supporter' },
             ],
-            strAttr: AttributePreference.High,
-            dexAttr: AttributePreference.High,
-            conAttr: AttributePreference.Medium,
-            intAttr: AttributePreference.Medium,
-            wisAttr: AttributePreference.Low,
-            chaAttr: AttributePreference.Low,
+            strAttr: AbilityLevel.High,
+            dexAttr: AbilityLevel.High,
+            conAttr: AbilityLevel.Medium,
+            intAttr: AbilityLevel.Medium,
+            wisAttr: AbilityLevel.Low,
+            chaAttr: AbilityLevel.Low,
             attrItems: [
-                { value: AttributePreference.Low, text: 'Low' },
-                { value: AttributePreference.Medium, text: 'Medium' },
-                { value: AttributePreference.High, text: 'High' }
+                { value: AbilityLevel.Low, text: 'Low' },
+                { value: AbilityLevel.Medium, text: 'Medium' },
+                { value: AbilityLevel.High, text: 'High' }
             ],
             selectedSaves: [],
             encounterDiff: 'Normal',
@@ -220,6 +220,7 @@ export default defineComponent({
             curr.wisPref = this.wisAttr;
             curr.chaPref = this.chaAttr;
             curr.threatLevel = this.threatLevel;
+            curr.trainedSavingThrows = this.selectedSaves;
             return curr;
         },
         isThreatLevelDisabled() {
@@ -255,22 +256,22 @@ export default defineComponent({
     },
     watch: {
         strAttr(a, b) {
-            this.handleAttributeUpdate(Attribute.Strength, a, b);
+            this.handleAbilityUpdate(Ability.Strength, a, b);
         },
         dexAttr(a, b) {
-            this.handleAttributeUpdate(Attribute.Dexterity, a, b);
+            this.handleAbilityUpdate(Ability.Dexterity, a, b);
         },
         conAttr(a, b) {
-            this.handleAttributeUpdate(Attribute.Constitution, a, b);
+            this.handleAbilityUpdate(Ability.Constitution, a, b);
         },
         intAttr(a, b) {
-            this.handleAttributeUpdate(Attribute.Intelligence, a, b);
+            this.handleAbilityUpdate(Ability.Intelligence, a, b);
         },
         wisAttr(a, b) {
-            this.handleAttributeUpdate(Attribute.Wisdom, a, b);
+            this.handleAbilityUpdate(Ability.Wisdom, a, b);
         },
         chaAttr(a, b) {
-            this.handleAttributeUpdate(Attribute.Charisma, a, b);
+            this.handleAbilityUpdate(Ability.Charisma, a, b);
         },
         rank(a: Rank) {
             switch (a) {
@@ -294,37 +295,37 @@ export default defineComponent({
         }
     },
     methods: {
-        handleAttributeUpdate(attrToIgnore: Attribute, valueToReplace: AttributePreference, replacementValue: AttributePreference) {
-            if (this.areAttributesBalanced()) {
+        handleAbilityUpdate(attrToIgnore: Ability, valueToReplace: AbilityLevel, replacementValue: AbilityLevel) {
+            if (this.areAbilitysBalanced()) {
                 return;
             }
 
-            if (attrToIgnore != Attribute.Strength && this.strAttr == valueToReplace) {
+            if (attrToIgnore != Ability.Strength && this.strAttr == valueToReplace) {
                 this.strAttr = replacementValue;
                 return;
             }
-            if (attrToIgnore != Attribute.Dexterity && this.dexAttr == valueToReplace) {
+            if (attrToIgnore != Ability.Dexterity && this.dexAttr == valueToReplace) {
                 this.dexAttr = replacementValue;
                 return;
             }
-            if (attrToIgnore != Attribute.Constitution && this.conAttr == valueToReplace) {
+            if (attrToIgnore != Ability.Constitution && this.conAttr == valueToReplace) {
                 this.conAttr = replacementValue;
                 return;
             }
-            if (attrToIgnore != Attribute.Intelligence && this.intAttr == valueToReplace) {
+            if (attrToIgnore != Ability.Intelligence && this.intAttr == valueToReplace) {
                 this.intAttr = replacementValue;
                 return;
             }
-            if (attrToIgnore != Attribute.Wisdom && this.wisAttr == valueToReplace) {
+            if (attrToIgnore != Ability.Wisdom && this.wisAttr == valueToReplace) {
                 this.wisAttr = replacementValue;
                 return;
             }
-            if (attrToIgnore != Attribute.Charisma && this.chaAttr == valueToReplace) {
+            if (attrToIgnore != Ability.Charisma && this.chaAttr == valueToReplace) {
                 this.chaAttr = replacementValue;
                 return;
             }
         },
-        areAttributesBalanced() {
+        areAbilitysBalanced() {
             return (this.strAttr + this.dexAttr + this.conAttr + this.intAttr + this.wisAttr + this.chaAttr == 6);
         },
         updateSelectedSaves() {

@@ -1,6 +1,6 @@
 import { CombatRole } from '../enums/CombatRole'
 import { Rank } from '../enums/Rank'
-import { AttributePreference } from '../enums/AttributePreferences'
+import { AbilityLevel } from '../enums/AbilityLevel'
 
 export default class InputData {
     public level: number = 1;
@@ -8,10 +8,12 @@ export default class InputData {
     public rank: Rank = Rank.Grunt;
     public threatLevel: number = 1;
 
-    public strPref: AttributePreference = AttributePreference.High;
-    public dexPref: AttributePreference = AttributePreference.High;
-    public conPref: AttributePreference = AttributePreference.Medium;
-    public intPref: AttributePreference = AttributePreference.Medium;
-    public wisPref: AttributePreference = AttributePreference.Low;
-    public chaPref: AttributePreference = AttributePreference.Low;
+    public strPref: AbilityLevel = AbilityLevel.High;
+    public dexPref: AbilityLevel = AbilityLevel.High;
+    public conPref: AbilityLevel = AbilityLevel.Medium;
+    public intPref: AbilityLevel = AbilityLevel.Medium;
+    public wisPref: AbilityLevel = AbilityLevel.Low;
+    public chaPref: AbilityLevel = AbilityLevel.Low;
+
+    public trainedSavingThrows: string[] = [];
 }

@@ -79,6 +79,9 @@
                   </v-table>
               </v-col>
           </v-row>
+          <v-row>
+              <ExtrasSection :statBlock="currStatBlock"></ExtrasSection>
+          </v-row>
       </v-container>
   </v-card>
 </template>
@@ -87,6 +90,7 @@
 import { defineComponent } from 'vue';
 import InputData from '../models/InputData';
 import StatBlock from '../models/Monster';
+import ExtrasSection from '../components/ExtrasSection.vue';
 
 export default defineComponent({
   name: 'GeneratedOutput',
@@ -96,6 +100,9 @@ export default defineComponent({
           type: InputData,
           required: true
       }
+    },
+    components: {
+        ExtrasSection
     },
     computed: {
         currStatBlock() {

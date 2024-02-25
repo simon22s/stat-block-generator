@@ -1,5 +1,5 @@
-import { Attribute } from '../enums/Attribute'
-import { AttributePreference } from '../enums/AttributePreferences';
+import { Ability } from '../enums/Ability'
+import { AbilityLevel } from '../enums/AbilityLevel';
 import { CombatRole } from '../enums/CombatRole';
 import { Rank } from '../enums/Rank';
 import InputData from './InputData';
@@ -21,7 +21,7 @@ export default class StatBlock {
     public baseSaveDC: number = 1;
     public atkDamage: number = 1;
 
-    public trainedSavingThrows: Attribute[] = [];
+    public trainedSavingThrows: string[] = [];
 
     public threat: number = 1;
 
@@ -29,7 +29,12 @@ export default class StatBlock {
         let statBlock = this.getBaseStatBlock(input);
         statBlock = this.adjustStatBlockForRank(statBlock, input.rank);
         statBlock = this.adjustStatBlockForRole(statBlock, input.role);
-
+        
+        for (let i = 0; i < input.trainedSavingThrows.length; i++) {
+            const ability: Ability = Ability[input.trainedSavingThrows[i] as keyof typeof Ability];
+            statBlock.trainedSavingThrows.push(input.trainedSavingThrows[i].toString() + '+' + this.calcProfAbilityCheck(statBlock, ability));
+        }
+        
         return statBlock;
     }
 
@@ -117,14 +122,31 @@ export default class StatBlock {
         return statBlock;
     }
 
-    private static calcBaseStatMod(pref: AttributePreference, level: number) {
+    private static calcBaseStatMod(pref: AbilityLevel, level: number) {
         switch (pref) {
-            case AttributePreference.Low:
+            case AbilityLevel.Low:
                 return Math.floor(level / 12 - 1);
-            case AttributePreference.Medium:
+            case AbilityLevel.Medium:
                 return Math.floor(1 + level / 8);
-            case AttributePreference.High:
+            case AbilityLevel.High:
                 return level < 8 ? Math.floor(3 + level / 4) : Math.floor(5 + (level - 8) / 8);
+        }
+    }
+
+    private static calcProfAbilityCheck(statBlock: StatBlock, ability: Ability): number {
+        switch (ability) {
+            case Ability.Strength:
+                return statBlock.strMod + statBlock.profBonus;
+            case Ability.Dexterity:
+                return statBlock.dexMod + statBlock.profBonus;
+            case Ability.Constitution:
+                return statBlock.conMod + statBlock.profBonus;
+            case Ability.Intelligence:
+                return statBlock.intMod + statBlock.profBonus;
+            case Ability.Wisdom:
+                return statBlock.wisMod + statBlock.profBonus;
+            case Ability.Charisma:
+                return statBlock.chaMod + statBlock.profBonus;
         }
     }
 }
