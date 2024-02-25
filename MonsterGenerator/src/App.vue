@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <div class="d-flex align-center flex-column">
-            <v-card width="80%" class="pa-8">
+            <v-card width="60%" class="pa-8 mb-8">
                 <v-row>
                     <v-col class="d-flex">
                         <v-text-field v-model="partySize" type="number"></v-text-field>
@@ -9,7 +9,7 @@
                         <v-text-field v-model="partyLevel" type="number"></v-text-field>
                     </v-col>
                     <v-col>
-                        <span>Threat Budget: </span>
+                        <span>Threat Budget: {{threatBudget}}</span>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -21,7 +21,7 @@
                         </v-combobox>
                     </v-col>
                     <v-col>
-                        <span>The current creature has an adjusted Threat Level of </span>
+                        <span>The current creature has an adjusted Threat Level of {{adjustedThreatLevel}}</span>
                     </v-col>
                 </v-row>
             </v-card>
@@ -110,6 +110,7 @@ import { Rank } from './enums/Rank';
 import { CombatRole } from './enums/CombatRole';
 import { AttributePreference } from './enums/AttributePreferences';
 import InputData from './models/InputData';
+import ThreatCalculator, { EncounterDifficulty } from './services/ThreatCalculator';
 import GeneratedOutput from './components/GeneratedOutput.vue';
 
 export default defineComponent({
@@ -171,6 +172,12 @@ export default defineComponent({
         },
         isThreatLevelDisabled() {
             return this.rank != Rank.Paragon;
+        },
+        threatBudget() {
+            return ThreatCalculator.calcThreatBudget(this.partySize, this.encounterDiff as EncounterDifficulty);
+        },
+        adjustedThreatLevel() {
+            return ThreatCalculator.calcAdjustedThreatLevel(this.level, this.threatLevel, this.partyLevel);
         }
     },
     watch: {
