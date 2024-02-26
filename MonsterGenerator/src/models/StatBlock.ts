@@ -29,6 +29,7 @@ export default class StatBlock {
     public damageResistances: string[] = [];
     public damageImmunities: string[] = [];
     public conditionImmunities: string[] = [];
+    public senses: string[] = [];
 
     public threat: number = 1;
 
@@ -46,6 +47,8 @@ export default class StatBlock {
             const ability: Ability = SkillToAbilityMap.convert(input.skills[i]);
             statBlock.skills.push(input.skills[i] + '+' + this.calcProfAbilityCheck(statBlock, ability));
         }
+
+        statBlock = this.addSenseStringsToStatBlock(statBlock, input);
         
         return statBlock;
     }
@@ -73,6 +76,7 @@ export default class StatBlock {
             damageResistances: input.damageResistances,
             damageImmunities: input.damageImmunities,
             conditionImmunities: input.conditionImmunities,
+            senses: [],
             threat: input.threatLevel
         };
     }
@@ -165,5 +169,18 @@ export default class StatBlock {
             case Ability.Charisma:
                 return statBlock.chaMod + statBlock.profBonus;
         }
+    }
+
+    private static addSenseStringsToStatBlock(statBlock: StatBlock, input: InputData) {
+        if (input.skills.findIndex(x => x == 'Perception') >= 0) {
+            statBlock.senses.push("passive perception " + (10 + this.calcProfAbilityCheck(statBlock, Ability.Wisdom)));
+        } else {
+            statBlock.senses.push("passive perception " + (10 + statBlock.wisMod));
+        }
+
+        for (let i = 0; i < input.senses.length; i++) {
+            statBlock.senses.push(input.senses[i].getDisplayString());
+        }
+        return statBlock;
     }
 }

@@ -4,6 +4,7 @@ import { AbilityLevel } from '../enums/AbilityLevel'
 import { Skill } from '../enums/Skill'
 import { DamageType } from '../enums/DamageType';
 import { Condition } from '../enums/Conditions';
+import { Sense } from './Sense';
 
 export default class InputData {
     public level: number = 1;
@@ -25,4 +26,5 @@ export default class InputData {
     public damageResistances: DamageType[] = [];
     public damageImmunities: DamageType[] = [];
     public conditionImmunities: Condition[] = [];
+    public senses: Sense[] = [];
 }

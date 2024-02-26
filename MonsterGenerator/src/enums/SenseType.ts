@@ -1,0 +1,1 @@
+export const SenseTypes = ['Darkvision', 'Tremorsense', 'Blindsight', 'Truesight', 'Custom'];

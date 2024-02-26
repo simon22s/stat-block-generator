@@ -48,6 +48,14 @@
                   {{condition}}{{index + 1 != statBlock.conditionImmunities.length ? ', ' : ''}}
               </span>
           </v-row>
+          <v-row v-if="statBlock.senses.length > 0">
+              <span class="mr-1 font-weight-bold">Senses</span>
+              <span v-for="(sense, index) in statBlock.senses"
+                    :key="sense"
+                    class="mr-1">
+                  {{sense}}{{index + 1 != statBlock.senses.length ? ', ' : ''}}
+              </span>
+          </v-row>
       </v-container>
 </template>
 

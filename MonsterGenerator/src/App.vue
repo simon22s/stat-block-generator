@@ -148,6 +148,26 @@
                                                     multiple
                                                     chips>
                                         </v-combobox>
+                                        <v-dialog v-for="sense in senses" :key="sense" max-width="500">
+                                            <template v-slot:activator="{ props: activatorProps }">
+                                                <v-chip v-bind="activatorProps" class="mr-2" closable @click:close="onRemoveSense(sense)">
+                                                    {{sense.getDisplayString()}}
+                                                </v-chip>
+                                            </template>
+                                            <template v-slot:default="{ isActive }">
+                                                <SenseEditor :isAddingSense="false" :existingSense="sense" @closeEditor="isActive.value = false"></SenseEditor>
+                                            </template>
+                                        </v-dialog>
+                                        <v-dialog max-width="500">
+                                            <template v-slot:activator="{ props: activatorProps }">
+                                                <v-btn v-bind="activatorProps"
+                                                       text="Add Sense">
+                                                </v-btn>
+                                            </template>
+                                            <template v-slot:default="{ isActive }">
+                                                <SenseEditor :isAddingSense="true" @addSense="onAddSense" @closeEditor="isActive.value = false"></SenseEditor>
+                                            </template>
+                                        </v-dialog>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
                             </v-expansion-panels>
@@ -169,8 +189,10 @@ import { Rank } from './enums/Rank';
 import { CombatRole } from './enums/CombatRole';
 import { AbilityLevel } from './enums/AbilityLevel';
 import InputData from './models/InputData';
+import { Sense } from './models/Sense';
 import ThreatCalculator from './components/ThreatCalculator.vue';
 import GeneratedOutput from './components/GeneratedOutput.vue';
+import SenseEditor from './components/SenseEditor.vue';
 import { Skills } from './enums/Skill';
 import { DamageTypes } from './enums/DamageType';
 import { Conditions } from './enums/Conditions';
@@ -179,7 +201,8 @@ export default defineComponent({
     name: 'App',
     components: {
         GeneratedOutput,
-        ThreatCalculator
+        ThreatCalculator,
+        SenseEditor
     },
     data() {
         return {
@@ -221,7 +244,8 @@ export default defineComponent({
             damageImmunities: [],
             damageItems: DamageTypes,
             conditionImmunities: [],
-            conditionItems: Conditions
+            conditionItems: Conditions,
+            senses: []
         }
     },
     computed: {
@@ -243,6 +267,7 @@ export default defineComponent({
             curr.damageResistances = this.damageResistances;
             curr.damageImmunities = this.damageImmunities;
             curr.conditionImmunities = this.conditionImmunities;
+            curr.senses = this.senses;
             return curr;
         },
         isThreatLevelDisabled() {
@@ -347,6 +372,15 @@ export default defineComponent({
         updateSelectedSaves() {
             while (this.selectedSaves.length > this.numTrainedSavingThrows) {
                 this.selectedSaves.shift();
+            }
+        },
+        onAddSense(sense: Sense) {
+            (this.senses as Sense[]).push(sense);
+        },
+        onRemoveSense(sense: Sense) {
+            const index = (this.senses as Sense[]).findIndex(x => x == sense);
+            if (index >= 0) {
+                this.senses.splice(index, 1);
             }
         }
     }
