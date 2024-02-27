@@ -4,6 +4,7 @@ import { CombatRole } from '../enums/CombatRole';
 import { Rank } from '../enums/Rank';
 import { SkillToAbilityMap } from '../enums/Skill';
 import InputData from './InputData';
+import { StatBlockNamedLine } from './StatBlockNamedLine';
 export default class StatBlock {
     public level: number = 1;
     public hp: number = 10;
@@ -31,6 +32,13 @@ export default class StatBlock {
     public conditionImmunities: string[] = [];
     public senses: string[] = [];
 
+    public traits: StatBlockNamedLine[] = [];
+    public actions: StatBlockNamedLine[] = [];
+    public bonusActions: StatBlockNamedLine[] = [];
+    public reactions: StatBlockNamedLine[] = [];
+    public villainActions: StatBlockNamedLine[] = [];
+    public multiAttackCount: number = 0;    // 0 implies no multiattack
+
     public threat: number = 1;
 
     public static calcStatBlock(input: InputData): StatBlock {
@@ -40,12 +48,12 @@ export default class StatBlock {
         
         for (let i = 0; i < input.trainedSavingThrows.length; i++) {
             const ability: Ability = Ability[input.trainedSavingThrows[i] as keyof typeof Ability];
-            statBlock.trainedSavingThrows.push(input.trainedSavingThrows[i].toString() + '+' + this.calcProfAbilityCheck(statBlock, ability));
+            statBlock.trainedSavingThrows.push(input.trainedSavingThrows[i].toString() + '+' + this.calcAbilityCheck(statBlock, ability, true));
         }
         
         for (let i = 0; i < input.skills.length; i++) {
             const ability: Ability = SkillToAbilityMap.convert(input.skills[i]);
-            statBlock.skills.push(input.skills[i] + '+' + this.calcProfAbilityCheck(statBlock, ability));
+            statBlock.skills.push(input.skills[i] + '+' + this.calcAbilityCheck(statBlock, ability, true));
         }
 
         statBlock = this.addSenseStringsToStatBlock(statBlock, input);
@@ -77,6 +85,12 @@ export default class StatBlock {
             damageImmunities: input.damageImmunities,
             conditionImmunities: input.conditionImmunities,
             senses: [],
+            traits: [],
+            actions: [],
+            bonusActions: [],
+            reactions: [],
+            villainActions: [],
+            multiAttackCount: 0,
             threat: input.threatLevel
         };
     }
@@ -154,29 +168,27 @@ export default class StatBlock {
         }
     }
 
-    private static calcProfAbilityCheck(statBlock: StatBlock, ability: Ability): number {
+    private static calcAbilityCheck(statBlock: StatBlock, ability: Ability, isProf: boolean): number {
+        const profBonus = isProf ? statBlock.profBonus : 0;
+
         switch (ability) {
             case Ability.Strength:
-                return statBlock.strMod + statBlock.profBonus;
+                return statBlock.strMod + profBonus;
             case Ability.Dexterity:
-                return statBlock.dexMod + statBlock.profBonus;
+                return statBlock.dexMod + profBonus;
             case Ability.Constitution:
-                return statBlock.conMod + statBlock.profBonus;
+                return statBlock.conMod + profBonus;
             case Ability.Intelligence:
-                return statBlock.intMod + statBlock.profBonus;
+                return statBlock.intMod + profBonus;
             case Ability.Wisdom:
-                return statBlock.wisMod + statBlock.profBonus;
+                return statBlock.wisMod + profBonus;
             case Ability.Charisma:
-                return statBlock.chaMod + statBlock.profBonus;
+                return statBlock.chaMod + profBonus;
         }
     }
 
     private static addSenseStringsToStatBlock(statBlock: StatBlock, input: InputData) {
-        if (input.skills.findIndex(x => x == 'Perception') >= 0) {
-            statBlock.senses.push("passive perception " + (10 + this.calcProfAbilityCheck(statBlock, Ability.Wisdom)));
-        } else {
-            statBlock.senses.push("passive perception " + (10 + statBlock.wisMod));
-        }
+        statBlock.senses.push("passive perception " + (10 + this.calcAbilityCheck(statBlock, Ability.Wisdom, input.skills.findIndex(x => x == 'Perception') >= 0)));
 
         for (let i = 0; i < input.senses.length; i++) {
             statBlock.senses.push(input.senses[i].getDisplayString());
