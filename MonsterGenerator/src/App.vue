@@ -170,6 +170,20 @@
                                         </v-dialog>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
+                                <v-expansion-panel title="Adjustments">
+                                    <v-expansion-panel-text>
+                                        <v-row>
+                                            <v-span>HP Modifier </v-span>
+                                            <v-text-field v-model="hpMod" type="number" hide-details>
+                                            </v-text-field>
+                                        </v-row>
+                                        <v-row>
+                                            <v-span>AC Modifier </v-span>
+                                            <v-text-field v-model="acMod" type="number" hide-details>
+                                            </v-text-field>
+                                        </v-row>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
                             </v-expansion-panels>
                         </v-container>
                     </v-col>
@@ -245,7 +259,9 @@ export default defineComponent({
             damageItems: DamageTypes,
             conditionImmunities: [],
             conditionItems: Conditions,
-            senses: []
+            senses: [],
+            hpMod: 0,
+            acMod: 0
         }
     },
     computed: {
@@ -268,6 +284,8 @@ export default defineComponent({
             curr.damageImmunities = this.damageImmunities;
             curr.conditionImmunities = this.conditionImmunities;
             curr.senses = this.senses;
+            curr.hpMod = +this.hpMod;
+            curr.acMod = +this.acMod;
             return curr;
         },
         isThreatLevelDisabled() {

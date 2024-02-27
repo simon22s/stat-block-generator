@@ -27,4 +27,7 @@ export default class InputData {
     public damageImmunities: DamageType[] = [];
     public conditionImmunities: Condition[] = [];
     public senses: Sense[] = [];
+
+    public hpMod: number = 0;
+    public acMod: number = 0;
 }

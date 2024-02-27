@@ -57,8 +57,8 @@ export default class StatBlock {
         const profBonus = Math.floor(1 + (input.level + 3) / 4);
         return {
             level: input.level,
-            hp: 16 + (input.level * 7),
-            armorClass: Math.floor(12 + (input.level / 4)),
+            hp: 16 + (input.level * 7) + input.hpMod,
+            armorClass: Math.floor(12 + (input.level / 4) + input.acMod),
             profBonus: profBonus,
             speed: 30,
             atkDamage: input.level * 3,
