@@ -4,7 +4,8 @@ import { CombatRole } from '../enums/CombatRole';
 import { Rank } from '../enums/Rank';
 import { SkillToAbilityMap } from '../enums/Skill';
 import InputData from './InputData';
-import { StatBlockNamedLine } from './StatBlockNamedLine';
+import { StatBlockHtmlEntry } from './StatBlockHtmlEntry';
+import { Trait } from './Trait';
 export default class StatBlock {
     public level: number = 1;
     public hp: number = 10;
@@ -32,11 +33,11 @@ export default class StatBlock {
     public conditionImmunities: string[] = [];
     public senses: string[] = [];
 
-    public traits: StatBlockNamedLine[] = [];
-    public actions: StatBlockNamedLine[] = [];
-    public bonusActions: StatBlockNamedLine[] = [];
-    public reactions: StatBlockNamedLine[] = [];
-    public villainActions: StatBlockNamedLine[] = [];
+    public traits: StatBlockHtmlEntry[] = [];
+    public actions: StatBlockHtmlEntry[] = [];
+    public bonusActions: StatBlockHtmlEntry[] = [];
+    public reactions: StatBlockHtmlEntry[] = [];
+    public villainActions: StatBlockHtmlEntry[] = [];
     public multiAttackCount: number = 0;    // 0 implies no multiattack
 
     public threat: number = 1;
@@ -85,7 +86,7 @@ export default class StatBlock {
             damageImmunities: input.damageImmunities,
             conditionImmunities: input.conditionImmunities,
             senses: [],
-            traits: [],
+            traits: input.traits.map(x => Trait.getHtml(x)),
             actions: [],
             bonusActions: [],
             reactions: [],

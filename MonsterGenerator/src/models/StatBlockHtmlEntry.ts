@@ -1,5 +1,5 @@
 
-export class StatBlockNamedLine {
+export class StatBlockHtmlEntry {
     public name: string = '';
     public htmlText: string = '';
 }

@@ -18,7 +18,7 @@ import { SenseTypes } from '../enums/SenseType';
 import { Sense } from '../models/Sense';
 
 export default defineComponent({
-  name: 'ThreatCalculator',
+  name: 'SenseEditor',
   props: {
       isAddingSense: {
           type: Boolean,

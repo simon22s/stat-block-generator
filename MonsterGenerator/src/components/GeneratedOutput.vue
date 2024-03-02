@@ -17,6 +17,9 @@
           <v-row>
               <ExtrasSection :statBlock="currStatBlock"></ExtrasSection>
           </v-row>
+          <v-row>
+              <TraitsSection :statBlock="currStatBlock"></TraitsSection>
+          </v-row>
       </v-container>
   </v-card>
 </template>
@@ -28,6 +31,7 @@ import StatBlock from '../models/StatBlock';
 import ExtrasSection from '../components/ExtrasSection.vue';
 import BasicInfoSection from '../components/BasicInfoSection.vue';
 import AbilityScoreTable from '../components/AbilityScoreTable.vue';
+import TraitsSection from '../components/TraitsSection.vue';
 
 export default defineComponent({
   name: 'GeneratedOutput',
@@ -41,7 +45,8 @@ export default defineComponent({
     components: {
         ExtrasSection,
         BasicInfoSection,
-        AbilityScoreTable
+        AbilityScoreTable,
+        TraitsSection
     },
     computed: {
         currStatBlock(): StatBlock {

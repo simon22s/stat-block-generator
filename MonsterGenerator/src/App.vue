@@ -170,6 +170,12 @@
                                         </v-dialog>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
+                                <v-expansion-panel title="Traits">
+                                    <v-expansion-panel-text>
+                                        <CustomizableList :list="traits">
+                                        </CustomizableList>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
                                 <v-expansion-panel title="Adjustments">
                                     <v-expansion-panel-text>
                                         <v-row>
@@ -206,6 +212,7 @@ import InputData from './models/InputData';
 import { Sense } from './models/Sense';
 import ThreatCalculator from './components/ThreatCalculator.vue';
 import GeneratedOutput from './components/GeneratedOutput.vue';
+import CustomizableList from './components/CustomizableList.vue';
 import SenseEditor from './components/SenseEditor.vue';
 import { Skills } from './enums/Skill';
 import { DamageTypes } from './enums/DamageType';
@@ -216,7 +223,8 @@ export default defineComponent({
     components: {
         GeneratedOutput,
         ThreatCalculator,
-        SenseEditor
+        SenseEditor,
+        CustomizableList
     },
     data() {
         return {
@@ -260,6 +268,8 @@ export default defineComponent({
             conditionImmunities: [],
             conditionItems: Conditions,
             senses: [],
+            traits: [],
+            actions: [],
             hpMod: 0,
             acMod: 0
         }
@@ -284,6 +294,7 @@ export default defineComponent({
             curr.damageImmunities = this.damageImmunities;
             curr.conditionImmunities = this.conditionImmunities;
             curr.senses = this.senses;
+            curr.traits = this.traits;
             curr.hpMod = +this.hpMod;
             curr.acMod = +this.acMod;
             return curr;
