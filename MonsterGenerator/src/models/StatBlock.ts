@@ -141,11 +141,17 @@ export default class StatBlock {
                 statBlock.atkDamage = Math.floor(statBlock.atkDamage * 0.75);
                 break;
             case CombatRole.Lurker:
+                if (statBlock.senses.findIndex(x => x == 'Stealth') < 0) {
+                    statBlock.senses.push('Stealth');
+                }
                 statBlock.armorClass -= 4;
                 statBlock.hp = Math.floor(statBlock.hp * 0.75);
                 statBlock.atkDamage = Math.floor(statBlock.atkDamage * 1.25);
                 break;
             case CombatRole.Skirmisher:
+                if (statBlock.senses.findIndex(x => x == 'Perception') < 0) {
+                    statBlock.senses.push('Perception');
+                }
                 statBlock.speed += 5;
                 statBlock.armorClass -= 2;
                 statBlock.hp = Math.floor(statBlock.hp * 0.75);

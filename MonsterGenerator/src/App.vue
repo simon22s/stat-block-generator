@@ -277,7 +277,7 @@ export default defineComponent({
     computed: {
         currentInput() {
             const curr = new InputData();
-            curr.level = this.level;
+            curr.level = +this.level;
             curr.role = this.role;
             curr.rank = this.rank;
             curr.strPref = this.strAttr;

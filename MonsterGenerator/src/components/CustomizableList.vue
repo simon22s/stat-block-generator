@@ -3,7 +3,7 @@
         <v-btn @click="openAddDialog"
                text="Add">
         </v-btn>
-        <v-dialog v-model="isDialogOpen" width="auto">
+        <v-dialog v-model="isDialogOpen" max-width="500">
             <component v-bind:is="dialogComponent" :isAddingItem="currAddingItem" :existingItem="currItemToEdit" @addItem="onAddItem" @closeEditor="onDialogClosed"></component>
         </v-dialog>
         <v-row v-for="(item, index) in list" :key="index">
