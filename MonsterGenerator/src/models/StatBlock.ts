@@ -3,6 +3,7 @@ import { AbilityLevel } from '../enums/AbilityLevel';
 import { CombatRole } from '../enums/CombatRole';
 import { Rank } from '../enums/Rank';
 import { SkillToAbilityMap } from '../enums/Skill';
+import { ActionInput } from './ActionInput';
 import InputData from './InputData';
 import { StatBlockHtmlEntry } from './StatBlockHtmlEntry';
 import { Trait } from './Trait';
@@ -58,6 +59,7 @@ export default class StatBlock {
         }
 
         statBlock = this.addSenseStringsToStatBlock(statBlock, input);
+        statBlock = this.addAllActionsToStatBlock(statBlock, input);
         
         return statBlock;
     }
@@ -175,7 +177,7 @@ export default class StatBlock {
         }
     }
 
-    private static calcAbilityCheck(statBlock: StatBlock, ability: Ability, isProf: boolean): number {
+    public static calcAbilityCheck(statBlock: StatBlock, ability: Ability, isProf: boolean): number {
         const profBonus = isProf ? statBlock.profBonus : 0;
 
         switch (ability) {
@@ -200,6 +202,18 @@ export default class StatBlock {
         for (let i = 0; i < input.senses.length; i++) {
             statBlock.senses.push(input.senses[i].getDisplayString());
         }
+        return statBlock;
+    }
+
+    public static calcSaveDCForAbility(statBlock: StatBlock, ability: Ability): number {
+        return 8 + StatBlock.calcAbilityCheck(statBlock, ability, true);
+    }
+
+    public static addAllActionsToStatBlock(statBlock: StatBlock, input: InputData) {
+        statBlock.actions = input.actions.filter(x => x.actionTime == 'Action').map(x => ActionInput.getHtml(x, statBlock));
+        statBlock.bonusActions = input.actions.filter(x => x.actionTime == 'Bonus Action').map(x => ActionInput.getHtml(x, statBlock));
+        statBlock.reactions = input.actions.filter(x => x.actionTime == 'Reaction').map(x => ActionInput.getHtml(x, statBlock));
+
         return statBlock;
     }
 }

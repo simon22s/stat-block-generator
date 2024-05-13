@@ -1,8 +1,10 @@
 <template>
-      <v-container v-if="statBlock.traits.length > 0">
-          <v-row v-for="trait in statBlock.traits" :key="trait">
-                <b class="mr-1">{{trait.name}}</b>
-                <p v-html="trait.htmlText"></p>
+      <v-container v-if="featuresList.length > 0">
+          <v-row v-if="sectionName != ''">
+            <p class="text-h6">{{sectionName}}</p>
+          </v-row>
+          <v-row v-for="feature in featuresList" :key="feature">
+                <p v-html="feature.htmlText" class="text-left"></p>
           </v-row>
           
       </v-container>
@@ -10,14 +12,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import StatBlock from '../models/StatBlock';
 
 export default defineComponent({
-  name: 'TraitsSection',
+  name: 'FeaturesSection',
   props: {
-      msg: String,
-      statBlock: {
-          type: StatBlock,
+      sectionName: {
+          type: String,
+          required: false,
+          default: ''
+      },
+      featuresList: {
+          type: [],
           required: true
       }
     }

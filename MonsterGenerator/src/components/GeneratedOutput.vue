@@ -18,7 +18,16 @@
               <ExtrasSection :statBlock="currStatBlock"></ExtrasSection>
           </v-row>
           <v-row>
-              <TraitsSection :statBlock="currStatBlock"></TraitsSection>
+              <FeaturesSection :featuresList="currStatBlock.traits"></FeaturesSection>
+          </v-row>
+          <v-row>
+              <FeaturesSection :featuresList="currStatBlock.actions" :sectionName="Actions"></FeaturesSection>
+          </v-row>
+          <v-row>
+              <FeaturesSection :featuresList="currStatBlock.bonusActions" :sectionName="BonusActions"></FeaturesSection>
+          </v-row>
+          <v-row>
+              <FeaturesSection :featuresList="currStatBlock.reactions" :sectionName="Reactions"></FeaturesSection>
           </v-row>
       </v-container>
   </v-card>
@@ -31,7 +40,7 @@ import StatBlock from '../models/StatBlock';
 import ExtrasSection from '../components/ExtrasSection.vue';
 import BasicInfoSection from '../components/BasicInfoSection.vue';
 import AbilityScoreTable from '../components/AbilityScoreTable.vue';
-import TraitsSection from '../components/TraitsSection.vue';
+import FeaturesSection from '../components/FeaturesSection.vue';
 
 export default defineComponent({
   name: 'GeneratedOutput',
@@ -46,7 +55,7 @@ export default defineComponent({
         ExtrasSection,
         BasicInfoSection,
         AbilityScoreTable,
-        TraitsSection
+        FeaturesSection
     },
     computed: {
         currStatBlock(): StatBlock {

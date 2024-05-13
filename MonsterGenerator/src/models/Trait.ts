@@ -7,7 +7,7 @@ export class Trait {
     public static getHtml(trait: Trait): StatBlockHtmlEntry {
         return {
             name: trait.name,
-            htmlText: trait.description
+            htmlText: `<b>${trait.name} </b>${trait.description}`
         }
     }
 }

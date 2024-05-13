@@ -172,7 +172,13 @@
                                 </v-expansion-panel>
                                 <v-expansion-panel title="Traits">
                                     <v-expansion-panel-text>
-                                        <CustomizableList :list="traits">
+                                        <CustomizableList :list="traits" :shouldUseTraitEditor=true>
+                                        </CustomizableList>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                                <v-expansion-panel title="Actions">
+                                    <v-expansion-panel-text>
+                                        <CustomizableList :list="actions" :shouldUseTraitEditor=false>
                                         </CustomizableList>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
@@ -297,6 +303,7 @@ export default defineComponent({
             curr.traits = this.traits;
             curr.hpMod = +this.hpMod;
             curr.acMod = +this.acMod;
+            curr.actions = this.actions;
             return curr;
         },
         isThreatLevelDisabled() {

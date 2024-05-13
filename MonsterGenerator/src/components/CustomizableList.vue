@@ -27,6 +27,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TraitEditor from './TraitEditor.vue';
+import ActionEditor from './ActionEditor.vue';
 
 export default defineComponent({
     name: 'CustomizableList',
@@ -41,7 +42,8 @@ export default defineComponent({
         }
     },
     components: {
-        TraitEditor
+        TraitEditor,
+        ActionEditor
     },
     data() {
         return{
@@ -52,7 +54,7 @@ export default defineComponent({
     },
     computed: {
         dialogComponent() {
-            return TraitEditor;
+            return this.shouldUseTraitEditor ? TraitEditor : ActionEditor;
         }
     },
     methods: {
