@@ -59,7 +59,7 @@ export default defineComponent({
     },
     computed: {
         currStatBlock(): StatBlock {
-            return StatBlock.calcStatBlock(this.inputData);
+            return new StatBlock(this.inputData);
         }
     }
 });

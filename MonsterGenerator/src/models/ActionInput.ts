@@ -3,6 +3,7 @@ import { ActionTime } from "../enums/ActionTime";
 import { AttackRange } from "../enums/AttackRange";
 import { AttackType } from "../enums/AttackType";
 import { DamageType } from "../enums/DamageType";
+import DiceUtilities from "../services/DiceUtilities";
 import StatBlock from "./StatBlock";
 import { StatBlockHtmlEntry } from "./StatBlockHtmlEntry";
 
@@ -26,17 +27,17 @@ export class ActionInput {
 
     public static interpretEffectTextSnippets(effectText: string, statBlock: StatBlock): string {
         const strSaveDCRegEx = /{{saveDC:str}}/;
-        let result = effectText.replace(strSaveDCRegEx, `DC ${StatBlock.calcSaveDCForAbility(statBlock, Ability.Strength)}`);
+        let result = effectText.replace(strSaveDCRegEx, `DC ${statBlock.getSaveDCForAbility(Ability.Strength)}`);
         const dexSaveDCRegEx = /{{saveDC:dex}}/;
-        result = result.replace(dexSaveDCRegEx, `DC ${StatBlock.calcSaveDCForAbility(statBlock, Ability.Dexterity)}`);
+        result = result.replace(dexSaveDCRegEx, `DC ${statBlock.getSaveDCForAbility(Ability.Dexterity)}`);
         const conSaveDCRegEx = /{{saveDC:con}}/;
-        result = result.replace(conSaveDCRegEx, `DC ${StatBlock.calcSaveDCForAbility(statBlock, Ability.Constitution)}`);
+        result = result.replace(conSaveDCRegEx, `DC ${statBlock.getSaveDCForAbility(Ability.Constitution)}`);
         const intSaveDCRegEx = /{{saveDC:int}}/;
-        result = result.replace(intSaveDCRegEx, `DC ${StatBlock.calcSaveDCForAbility(statBlock, Ability.Intelligence)}`);
+        result = result.replace(intSaveDCRegEx, `DC ${statBlock.getSaveDCForAbility(Ability.Intelligence)}`);
         const wisSaveDCRegEx = /{{saveDC:wis}}/;
-        result = result.replace(wisSaveDCRegEx, `DC ${StatBlock.calcSaveDCForAbility(statBlock, Ability.Wisdom)}`);
+        result = result.replace(wisSaveDCRegEx, `DC ${statBlock.getSaveDCForAbility(Ability.Wisdom)}`);
         const chaSaveDCRegEx = /{{saveDC:cha}}/;
-        result = result.replace(chaSaveDCRegEx, `DC ${StatBlock.calcSaveDCForAbility(statBlock, Ability.Charisma)}`);
+        result = result.replace(chaSaveDCRegEx, `DC ${statBlock.getSaveDCForAbility(Ability.Charisma)}`);
 
         /*const dmgExp = /{{avgDmg:.*}}/;
         const dmgSnippets = Array.from(result.matchAll(dmgExp));
@@ -57,12 +58,13 @@ export class AttackActionInput extends ActionInput {
     public damageType: DamageType = 'Bludgeoning';
 
     public static getHtml(action: AttackActionInput, statBlock: StatBlock): StatBlockHtmlEntry {
-        const toHit = StatBlock.calcAbilityCheck(statBlock, action.attackStat, action.isProficient);
-        const avgDmg = statBlock.atkDamage;
+        const toHit = statBlock.getAbilityCheck(action.attackStat, action.isProficient);
+        const relevantStatMod = statBlock.getStatMod(action.attackStat);
+        const damageText = DiceUtilities.getDamageRollTextForAverageDamageValue(statBlock.atkDamage, relevantStatMod);
 
         return {
             name: action.name,
-            htmlText: `<b>${action.name} </b><i>${action.attackRange} ${action.attackType} attack:</i> +${toHit} to hit, reach ${action.range} ft. one target. Hit: ${avgDmg} ${action.damageType.toLowerCase()} damage. ${this.interpretEffectTextSnippets(action.effectText, statBlock)}`
+            htmlText: `<b>${action.name} </b><i>${action.attackRange} ${action.attackType} attack:</i> +${toHit} to hit, reach ${action.range} ft. one target. Hit: ${damageText} ${action.damageType.toLowerCase()} damage. ${this.interpretEffectTextSnippets(action.effectText, statBlock)}`
         }
     }
 }

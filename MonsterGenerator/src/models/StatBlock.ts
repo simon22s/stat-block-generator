@@ -43,127 +43,122 @@ export default class StatBlock {
 
     public threat: number = 1;
 
-    public static calcStatBlock(input: InputData): StatBlock {
-        let statBlock = this.getBaseStatBlock(input);
-        statBlock = this.adjustStatBlockForRank(statBlock, input.rank);
-        statBlock = this.adjustStatBlockForRole(statBlock, input.role);
+    constructor(input: InputData) {
+        const profBonus = Math.floor(1 + (input.level + 3) / 4);
+        this.level = input.level;
+        this.hp = 16 + (input.level * 7) + input.hpMod;
+        this.armorClass = Math.floor(12 + (input.level / 4) + input.acMod);
+        this.profBonus = profBonus;
+        this.speed = 30;
+        this.atkDamage = input.level * 3;
+        this.strMod = StatBlock.calcBaseStatMod(input.strPref, input.level);
+        this.dexMod = StatBlock.calcBaseStatMod(input.dexPref, input.level);
+        this.conMod = StatBlock.calcBaseStatMod(input.conPref, input.level);
+        this.intMod = StatBlock.calcBaseStatMod(input.intPref, input.level);
+        this.wisMod = StatBlock.calcBaseStatMod(input.wisPref, input.level);
+        this.chaMod = StatBlock.calcBaseStatMod(input.chaPref, input.level);
+        this.baseAtkBonus = profBonus;
+        this.baseSaveDC = 8 + profBonus;
+        this.trainedSavingThrows = [];
+        this.skills = [];
+        this.damageVulnerabilities = input.damageVulnerabilities;
+        this.damageResistances = input.damageResistances;
+        this.damageImmunities = input.damageImmunities;
+        this.conditionImmunities = input.conditionImmunities;
+        this.senses = [];
+        this.traits = input.traits.map(x => Trait.getHtml(x));
+        this.actions = [];
+        this.bonusActions = [];
+        this.reactions = [];
+        this.villainActions = [];
+        this.multiAttackCount = 0;
+        this.threat = input.threatLevel;
+
+        this.calcStatBlock(input);
+    }
+
+    private calcStatBlock(input: InputData) {
+        this.adjustStatBlockForRank(input.rank);
+        this.adjustStatBlockForRole(input.role);
         
         for (let i = 0; i < input.trainedSavingThrows.length; i++) {
             const ability: Ability = Ability[input.trainedSavingThrows[i] as keyof typeof Ability];
-            statBlock.trainedSavingThrows.push(input.trainedSavingThrows[i].toString() + '+' + this.calcAbilityCheck(statBlock, ability, true));
+            this.trainedSavingThrows.push(input.trainedSavingThrows[i].toString() + '+' + this.getAbilityCheck(ability, true));
         }
         
         for (let i = 0; i < input.skills.length; i++) {
             const ability: Ability = SkillToAbilityMap.convert(input.skills[i]);
-            statBlock.skills.push(input.skills[i] + '+' + this.calcAbilityCheck(statBlock, ability, true));
+            this.skills.push(input.skills[i] + '+' + this.getAbilityCheck(ability, true));
         }
 
-        statBlock = this.addSenseStringsToStatBlock(statBlock, input);
-        statBlock = this.addAllActionsToStatBlock(statBlock, input);
-        
-        return statBlock;
+        this.addSenseStrings(input);
+        this.addAllActions(input);
     }
 
-    private static getBaseStatBlock(input: InputData): StatBlock {
-        const profBonus = Math.floor(1 + (input.level + 3) / 4);
-        return {
-            level: input.level,
-            hp: 16 + (input.level * 7) + input.hpMod,
-            armorClass: Math.floor(12 + (input.level / 4) + input.acMod),
-            profBonus: profBonus,
-            speed: 30,
-            atkDamage: input.level * 3,
-            strMod: this.calcBaseStatMod(input.strPref, input.level),
-            dexMod: this.calcBaseStatMod(input.dexPref, input.level),
-            conMod: this.calcBaseStatMod(input.conPref, input.level),
-            intMod: this.calcBaseStatMod(input.intPref, input.level),
-            wisMod: this.calcBaseStatMod(input.wisPref, input.level),
-            chaMod: this.calcBaseStatMod(input.chaPref, input.level),
-            baseAtkBonus: profBonus,
-            baseSaveDC: 8 + profBonus,
-            trainedSavingThrows: [],
-            skills: [],
-            damageVulnerabilities: input.damageVulnerabilities,
-            damageResistances: input.damageResistances,
-            damageImmunities: input.damageImmunities,
-            conditionImmunities: input.conditionImmunities,
-            senses: [],
-            traits: input.traits.map(x => Trait.getHtml(x)),
-            actions: [],
-            bonusActions: [],
-            reactions: [],
-            villainActions: [],
-            multiAttackCount: 0,
-            threat: input.threatLevel
-        };
-    }
-
-    private static adjustStatBlockForRank(statBlock: StatBlock, rank: Rank): StatBlock {
+    private adjustStatBlockForRank(rank: Rank) {
         switch (rank) {
             case (Rank.Minion):
-                statBlock.hp * Math.floor(statBlock.hp * 0.2);
-                statBlock.atkDamage * Math.floor(statBlock.atkDamage * 0.75);
+                this.hp * Math.floor(this.hp * 0.2);
+                this.atkDamage * Math.floor(this.atkDamage * 0.75);
                 break;
             case (Rank.Elite):
-                statBlock.armorClass += 1;
-                statBlock.hp *= 2;
-                statBlock.strMod += 1;
-                statBlock.dexMod += 1;
-                statBlock.conMod += 1;
-                statBlock.intMod += 1;
-                statBlock.wisMod += 1;
-                statBlock.chaMod += 1;
-                statBlock.atkDamage * Math.floor(statBlock.atkDamage * 1.1);
+                this.armorClass += 1;
+                this.hp *= 2;
+                this.strMod += 1;
+                this.dexMod += 1;
+                this.conMod += 1;
+                this.intMod += 1;
+                this.wisMod += 1;
+                this.chaMod += 1;
+                this.atkDamage * Math.floor(this.atkDamage * 1.1);
                 break;
             case (Rank.Paragon):
-                statBlock.armorClass += 2;
-                statBlock.hp = Math.floor(statBlock.hp * statBlock.threat);
-                statBlock.strMod += 2;
-                statBlock.dexMod += 2;
-                statBlock.conMod += 2;
-                statBlock.intMod += 2;
-                statBlock.wisMod += 2;
-                statBlock.chaMod += 2;
-                statBlock.atkDamage * Math.floor(statBlock.atkDamage * 1.2);
+                this.armorClass += 2;
+                this.hp = Math.floor(this.hp * this.threat);
+                this.strMod += 2;
+                this.dexMod += 2;
+                this.conMod += 2;
+                this.intMod += 2;
+                this.wisMod += 2;
+                this.chaMod += 2;
+                this.atkDamage * Math.floor(this.atkDamage * 1.2);
                 break;
         }
-        return statBlock;
     }
 
-    private static adjustStatBlockForRole(statBlock: StatBlock, role: CombatRole): StatBlock {
+    private adjustStatBlockForRole(role: CombatRole) {
         switch (role) {
             case CombatRole.Controller:
-                statBlock.armorClass += 2;
-                statBlock.atkDamage = Math.floor(statBlock.atkDamage * 0.75);
+                this.armorClass += 2;
+                this.atkDamage = Math.floor(this.atkDamage * 0.75);
                 break;
             case CombatRole.Defender:
-                statBlock.speed -= 5;
-                statBlock.armorClass += 4;
-                statBlock.hp = Math.floor(statBlock.hp * 0.75);
-                statBlock.atkDamage = Math.floor(statBlock.atkDamage * 0.75);
+                this.speed -= 5;
+                this.armorClass += 4;
+                this.hp = Math.floor(this.hp * 0.75);
+                this.atkDamage = Math.floor(this.atkDamage * 0.75);
                 break;
             case CombatRole.Lurker:
-                if (statBlock.senses.findIndex(x => x == 'Stealth') < 0) {
-                    statBlock.senses.push('Stealth');
+                if (this.senses.findIndex(x => x == 'Stealth') < 0) {
+                    this.senses.push('Stealth');
                 }
-                statBlock.armorClass -= 4;
-                statBlock.hp = Math.floor(statBlock.hp * 0.75);
-                statBlock.atkDamage = Math.floor(statBlock.atkDamage * 1.25);
+                this.armorClass -= 4;
+                this.hp = Math.floor(this.hp * 0.75);
+                this.atkDamage = Math.floor(this.atkDamage * 1.25);
                 break;
             case CombatRole.Skirmisher:
-                if (statBlock.senses.findIndex(x => x == 'Perception') < 0) {
-                    statBlock.senses.push('Perception');
+                if (this.senses.findIndex(x => x == 'Perception') < 0) {
+                    this.senses.push('Perception');
                 }
-                statBlock.speed += 5;
-                statBlock.armorClass -= 2;
-                statBlock.hp = Math.floor(statBlock.hp * 0.75);
+                this.speed += 5;
+                this.armorClass -= 2;
+                this.hp = Math.floor(this.hp * 0.75);
                 break;
             case CombatRole.Supporter:
-                statBlock.hp = Math.floor(statBlock.hp * 1.25);
-                statBlock.atkDamage = Math.floor(statBlock.atkDamage * 0.75);
+                this.hp = Math.floor(this.hp * 1.25);
+                this.atkDamage = Math.floor(this.atkDamage * 0.75);
                 break;
         }
-        return statBlock;
     }
 
     private static calcBaseStatMod(pref: AbilityLevel, level: number) {
@@ -177,43 +172,63 @@ export default class StatBlock {
         }
     }
 
-    public static calcAbilityCheck(statBlock: StatBlock, ability: Ability, isProf: boolean): number {
-        const profBonus = isProf ? statBlock.profBonus : 0;
+    public getAbilityCheck(ability: Ability, isProf: boolean): number {
+        const profBonus = isProf ? this.profBonus : 0;
 
         switch (ability) {
             case Ability.Strength:
-                return statBlock.strMod + profBonus;
+                return this.strMod + profBonus;
             case Ability.Dexterity:
-                return statBlock.dexMod + profBonus;
+                return this.dexMod + profBonus;
             case Ability.Constitution:
-                return statBlock.conMod + profBonus;
+                return this.conMod + profBonus;
             case Ability.Intelligence:
-                return statBlock.intMod + profBonus;
+                return this.intMod + profBonus;
             case Ability.Wisdom:
-                return statBlock.wisMod + profBonus;
+                return this.wisMod + profBonus;
             case Ability.Charisma:
-                return statBlock.chaMod + profBonus;
+                return this.chaMod + profBonus;
         }
     }
 
-    private static addSenseStringsToStatBlock(statBlock: StatBlock, input: InputData) {
-        statBlock.senses.push("passive perception " + (10 + this.calcAbilityCheck(statBlock, Ability.Wisdom, input.skills.findIndex(x => x == 'Perception') >= 0)));
+    private addSenseStrings(input: InputData) {
+        this.senses.push("passive perception " + (10 + this.getAbilityCheck(Ability.Wisdom, input.skills.findIndex(x => x == 'Perception') >= 0)));
 
         for (let i = 0; i < input.senses.length; i++) {
-            statBlock.senses.push(input.senses[i].getDisplayString());
+            this.senses.push(input.senses[i].getDisplayString());
         }
-        return statBlock;
     }
 
-    public static calcSaveDCForAbility(statBlock: StatBlock, ability: Ability): number {
-        return 8 + StatBlock.calcAbilityCheck(statBlock, ability, true);
+    public getSaveDCForAbility(ability: Ability): number {
+        return 8 + this.getAbilityCheck(ability, true);
     }
 
-    public static addAllActionsToStatBlock(statBlock: StatBlock, input: InputData) {
-        statBlock.actions = input.actions.filter(x => x.actionTime == 'Action').map(x => ActionInput.getHtml(x, statBlock));
-        statBlock.bonusActions = input.actions.filter(x => x.actionTime == 'Bonus Action').map(x => ActionInput.getHtml(x, statBlock));
-        statBlock.reactions = input.actions.filter(x => x.actionTime == 'Reaction').map(x => ActionInput.getHtml(x, statBlock));
+    public addAllActions(input: InputData) {
+        this.actions = input.actions.filter(x => x.actionTime == 'Action').map(x => ActionInput.getHtml(x, this));
+        this.bonusActions = input.actions.filter(x => x.actionTime == 'Bonus Action').map(x => ActionInput.getHtml(x, this));
+        this.reactions = input.actions.filter(x => x.actionTime == 'Reaction').map(x => ActionInput.getHtml(x, this));
+    }
 
-        return statBlock;
+    public getStatMod(ability: Ability) {
+        switch (ability) {
+            case Ability.Strength:
+                return this.strMod;
+                break;
+            case Ability.Dexterity:
+                return this.dexMod;
+                break;
+            case Ability.Constitution:
+                return this.conMod;
+                break;
+            case Ability.Intelligence:
+                return this.intMod;
+                break;
+            case Ability.Wisdom:
+                return this.wisMod;
+                break;
+            case Ability.Charisma:
+                return this.chaMod;
+                break;
+        }
     }
 }
