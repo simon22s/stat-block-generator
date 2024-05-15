@@ -15,9 +15,11 @@
                 <v-radio label="Weapon" value="Weapon"></v-radio>
                 <v-radio label="Spell" value="Spell"></v-radio>
             </v-radio-group>
-            <v-text-field v-if="isAttackAction" v-model="range" type="number" hide-details>
+            <v-text-field v-if="isAttackAction" v-model="range" type="number" :step="5" hide-details>
             </v-text-field>
             <v-checkbox v-if="isAttackAction" v-model="isProficient" label="Is Proficient"></v-checkbox>
+            <v-text-field v-if="isAttackAction" v-model="damageMult" type="number" :step="0.01" hide-details>
+            </v-text-field>
             <v-combobox v-if="isAttackAction" v-model="damageType" :items="damageItems"></v-combobox>
             <v-text-field v-model="effectText"></v-text-field>
         </v-card-text>
@@ -59,6 +61,7 @@ export default defineComponent({
             attackType: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).attackType : 'Weapon',
             range: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).range : 5,
             isProficient: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).isProficient : true,
+            damageMult: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).damageMult : 1,
             damageType: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).damageType : 'Bludgeoning',
             attackStatItems: [
                 { value: Ability.Strength, text: 'Strength' },
@@ -96,6 +99,7 @@ export default defineComponent({
                         attackType: this.attackType,
                         range: this.range,
                         isProficient: this.isProficient,
+                        damageMult: this.damageMult,
                         damageType: this.damageType,
                     });
                 } else {
@@ -110,6 +114,17 @@ export default defineComponent({
                 this.existingItem!.actionType = this.actionType;
                 this.existingItem!.name = this.actionName;
                 this.existingItem!.actionTime = this.actionTime;
+                this.existingItem!.effectText = this.effectText;
+
+                if (this.actionType == 'Attack') {
+                    (this.existingItem! as AttackActionInput).attackStat = this.attackStat;
+                    (this.existingItem! as AttackActionInput).attackRange = this.attackRange;
+                    (this.existingItem! as AttackActionInput).attackType = this.attackType;
+                    (this.existingItem! as AttackActionInput).range = this.range;
+                    (this.existingItem! as AttackActionInput).isProficient = this.isProficient;
+                    (this.existingItem! as AttackActionInput).damageMult = this.damageMult;
+                    (this.existingItem! as AttackActionInput).damageType = this.damageType;
+                }
             }
             this.$emit('closeEditor');
         },

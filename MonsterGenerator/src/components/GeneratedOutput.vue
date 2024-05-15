@@ -21,13 +21,13 @@
               <FeaturesSection :featuresList="currStatBlock.traits"></FeaturesSection>
           </v-row>
           <v-row>
-              <FeaturesSection :featuresList="currStatBlock.actions" :sectionName="Actions"></FeaturesSection>
+              <FeaturesSection :featuresList="currStatBlock.actions" :sectionName="'Actions'"></FeaturesSection>
           </v-row>
           <v-row>
-              <FeaturesSection :featuresList="currStatBlock.bonusActions" :sectionName="BonusActions"></FeaturesSection>
+              <FeaturesSection :featuresList="currStatBlock.bonusActions" :sectionName="'Bonus Actions'"></FeaturesSection>
           </v-row>
           <v-row>
-              <FeaturesSection :featuresList="currStatBlock.reactions" :sectionName="Reactions"></FeaturesSection>
+              <FeaturesSection :featuresList="currStatBlock.reactions" :sectionName="'Reactions'"></FeaturesSection>
           </v-row>
       </v-container>
   </v-card>
