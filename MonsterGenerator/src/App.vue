@@ -8,6 +8,24 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="8">
+                                    <v-text-field v-model="name" label="Name">
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-dialog max-width="500">
+                                        <template v-slot:activator="{ props: activatorProps }">
+                                            <v-btn v-bind="activatorProps"
+                                                   text="Save/Load">
+                                            </v-btn>
+                                        </template>
+                                        <template v-slot:default="{ isActive }">
+                                            <SerializationModal :inputJson="currentInputJson" @saveJson="onSaveJson" @closeModal="isActive.value = false"></SerializationModal>
+                                        </template>
+                                    </v-dialog>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="8">
                                     <span>Level</span>
                                     <v-slider v-model="level" :min="1" :max="20" :step="1" hide-details>
                                         <template v-slot:append>
@@ -220,9 +238,12 @@ import ThreatCalculator from './components/ThreatCalculator.vue';
 import GeneratedOutput from './components/GeneratedOutput.vue';
 import CustomizableList from './components/CustomizableList.vue';
 import SenseEditor from './components/SenseEditor.vue';
-import { Skills } from './enums/Skill';
-import { DamageTypes } from './enums/DamageType';
-import { Conditions } from './enums/Conditions';
+import SerializationModal from './components/SerializationModal.vue';
+import { Skill, Skills } from './enums/Skill';
+import { DamageType, DamageTypes } from './enums/DamageType';
+import { Condition, Conditions } from './enums/Conditions';
+import { Trait } from './models/Trait';
+import { ActionInput } from './models/ActionInput';
 
 export default defineComponent({
     name: 'App',
@@ -230,10 +251,12 @@ export default defineComponent({
         GeneratedOutput,
         ThreatCalculator,
         SenseEditor,
-        CustomizableList
+        CustomizableList,
+        SerializationModal
     },
     data() {
         return {
+            name: 'Name',
             level: 1,
             rank: Rank.Grunt,
             threatLevel: 1,
@@ -283,6 +306,7 @@ export default defineComponent({
     computed: {
         currentInput() {
             const curr = new InputData();
+            curr.name = this.name;
             curr.level = +this.level;
             curr.role = this.role;
             curr.rank = this.rank;
@@ -305,6 +329,9 @@ export default defineComponent({
             curr.acMod = +this.acMod;
             curr.actions = this.actions;
             return curr;
+        },
+        currentInputJson() {
+            return JSON.stringify(this.currentInput);
         },
         isThreatLevelDisabled() {
             return this.rank != Rank.Paragon;
@@ -418,6 +445,34 @@ export default defineComponent({
             if (index >= 0) {
                 this.senses.splice(index, 1);
             }
+        },
+        onSaveJson(json: string) {
+            console.log(json);
+            const newInput: InputData = JSON.parse(json);
+            console.log(newInput);
+            this.name = newInput.name;
+            this.level = +newInput.level;
+            this.role = newInput.role;
+            this.rank = newInput.rank;
+            this.strAttr = newInput.strPref;
+            this.dexAttr = newInput.dexPref;
+            this.conAttr = newInput.conPref;
+            this.intAttr = newInput.intPref;
+            this.wisAttr = newInput.wisPref;
+            this.chaAttr = newInput.chaPref;
+            this.threatLevel = newInput.threatLevel;
+            (this.selectedSaves as string[]) = newInput.trainedSavingThrows;
+            (this.skills as Skill[]) = newInput.skills;
+            (this.damageVulnerabilities as DamageType[]) = newInput.damageVulnerabilities;
+            (this.damageResistances as DamageType[]) = newInput.damageResistances;
+            (this.damageImmunities as DamageType[]) = newInput.damageImmunities;
+            (this.conditionImmunities as Condition[]) = newInput.conditionImmunities;
+            this.senses = [];
+            newInput.senses.forEach(x => (this.senses as Sense[]).push(new Sense(x.senseType, x.distance)));
+            (this.traits as Trait[]) = newInput.traits;
+            this.hpMod = +newInput.hpMod;
+            this.acMod = +newInput.acMod;
+            (this.actions as ActionInput[]) = newInput.actions;
         }
     }
 });

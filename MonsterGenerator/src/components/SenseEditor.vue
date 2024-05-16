@@ -62,9 +62,7 @@ export default defineComponent({
     methods: {
         addSense() {
             if (this.isAddingSense) {
-                const sense = new Sense();
-                sense.senseType = this.senseType != 'Custom' ? this.senseType : this.customSenseType;
-                sense.distance = this.distance;
+                const sense = new Sense(this.senseType != 'Custom' ? this.senseType : this.customSenseType, this.distance);
                 this.$emit('addSense', sense);
             } else if (this.existingSense){
                 this.existingSense!.senseType = this.senseType != 'Custom' ? this.senseType : this.customSenseType;

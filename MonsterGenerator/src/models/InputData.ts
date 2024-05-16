@@ -9,6 +9,7 @@ import { ActionInput } from './ActionInput';
 import { Trait } from './Trait';
 
 export default class InputData {
+    public name: string = '';
     public level: number = 1;
     public role: CombatRole = CombatRole.None;
     public rank: Rank = Rank.Grunt;

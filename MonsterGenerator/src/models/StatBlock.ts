@@ -8,6 +8,7 @@ import InputData from './InputData';
 import { StatBlockHtmlEntry } from './StatBlockHtmlEntry';
 import { Trait } from './Trait';
 export default class StatBlock {
+    public name: string = '';
     public level: number = 1;
     public hp: number = 10;
     public armorClass: number = 1;
@@ -45,6 +46,7 @@ export default class StatBlock {
 
     constructor(input: InputData) {
         const profBonus = Math.floor(1 + (input.level + 3) / 4);
+        this.name = input.name;
         this.level = input.level;
         this.hp = 16 + (input.level * 7) + input.hpMod;
         this.armorClass = Math.floor(12 + (input.level / 4) + input.acMod);
@@ -207,6 +209,7 @@ export default class StatBlock {
         this.actions = input.actions.filter(x => x.actionTime == 'Action').map(x => ActionInput.getHtml(x, this));
         this.bonusActions = input.actions.filter(x => x.actionTime == 'Bonus Action').map(x => ActionInput.getHtml(x, this));
         this.reactions = input.actions.filter(x => x.actionTime == 'Reaction').map(x => ActionInput.getHtml(x, this));
+        this.villainActions = input.actions.filter(x => x.actionTime == 'Villain Action').map(x => ActionInput.getHtml(x, this));
     }
 
     public getStatMod(ability: Ability) {

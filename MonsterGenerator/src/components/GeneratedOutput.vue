@@ -3,7 +3,7 @@
       <v-container>
           <v-row>
               <v-col class="text-left">
-                  <span>Name</span>
+                  <span>{{currStatBlock.name}}</span>
               </v-col>
           </v-row>
           <v-row>
@@ -28,6 +28,9 @@
           </v-row>
           <v-row>
               <FeaturesSection :featuresList="currStatBlock.reactions" :sectionName="'Reactions'"></FeaturesSection>
+          </v-row>
+          <v-row>
+              <FeaturesSection :featuresList="currStatBlock.villainActions" :sectionName="'Villain Actions'"></FeaturesSection>
           </v-row>
       </v-container>
   </v-card>
