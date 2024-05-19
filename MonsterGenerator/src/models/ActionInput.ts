@@ -4,6 +4,7 @@ import { AttackRange } from "../enums/AttackRange";
 import { AttackType } from "../enums/AttackType";
 import { DamageType } from "../enums/DamageType";
 import DiceUtilities from "../services/DiceUtilities";
+import SnippetInterpreter from "../services/SnippetInterpreter";
 import StatBlock from "./StatBlock";
 import { StatBlockHtmlEntry } from "./StatBlockHtmlEntry";
 
@@ -20,34 +21,9 @@ export class ActionInput {
         } else {
             return {
                 name: action.name,
-                htmlText: `<b>${action.name} </b>` + this.interpretEffectTextSnippets(action.effectText, statBlock)
+                htmlText: `<b>${action.name} </b>` + SnippetInterpreter.interpretEffectTextSnippets(action.effectText, statBlock)
             }
         }
-    }
-
-    public static interpretEffectTextSnippets(effectText: string, statBlock: StatBlock): string {
-        const strSaveDCRegEx = /{{saveDC:martial}}/;
-        const martialSaveDC = Math.max(statBlock.getSaveDCForAbility(Ability.Strength), statBlock.getSaveDCForAbility(Ability.Dexterity));
-        let result = effectText.replace(strSaveDCRegEx, `DC ${martialSaveDC}`);
-        
-        const intSaveDCRegEx = /{{saveDC:spell}}/;
-        const spellSaveDC = Math.max(statBlock.getSaveDCForAbility(Ability.Intelligence), statBlock.getSaveDCForAbility(Ability.Wisdom), statBlock.getSaveDCForAbility(Ability.Charisma));
-        result = result.replace(intSaveDCRegEx, `DC ${spellSaveDC}`);
-
-        const startOfDmgExp = '{{dmgMod:';
-        const endOfDmgExp = '}}';
-        const fullDmgExp = /{{dmgMod:.*}}/;
-        while (result.indexOf(startOfDmgExp) >= 0 && result.indexOf(endOfDmgExp) > 0) {
-            const dmgExpIndex = result.indexOf(startOfDmgExp);
-            const endOfDmgExpIndex = result.indexOf(endOfDmgExp);
-            const dmgMult = Number(result.substring(dmgExpIndex + startOfDmgExp.length, endOfDmgExpIndex));
-
-            if (dmgMult) {
-                const damageRoll = DiceUtilities.getDamageRollTextForAverageDamageValue(Math.round(dmgMult * statBlock.atkDamage), 0);
-                result = result.replace(fullDmgExp, damageRoll);
-            }
-        }
-        return result;
     }
 }
 
@@ -69,7 +45,7 @@ export class AttackActionInput extends ActionInput {
 
         return {
             name: action.name,
-            htmlText: `<b>${action.name} </b><i>${action.attackRange} ${action.attackType} attack:</i> +${toHit} to hit, reach ${action.range} ft. one target. Hit: ${damageValue} (${damageText}) ${action.damageType.toLowerCase()} damage. ${this.interpretEffectTextSnippets(action.effectText, statBlock)}`
+            htmlText: `<b>${action.name} </b><i>${action.attackRange} ${action.attackType} attack:</i> +${toHit} to hit, reach ${action.range} ft. one target. Hit: ${damageValue} (${damageText}) ${action.damageType.toLowerCase()} damage. ${SnippetInterpreter.interpretEffectTextSnippets(action.effectText, statBlock)}`
         }
     }
 }

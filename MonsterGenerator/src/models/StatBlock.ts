@@ -68,7 +68,7 @@ export default class StatBlock {
         this.damageImmunities = input.damageImmunities;
         this.conditionImmunities = input.conditionImmunities;
         this.senses = [];
-        this.traits = input.traits.map(x => Trait.getHtml(x));
+        this.traits = [];
         this.actions = [];
         this.bonusActions = [];
         this.reactions = [];
@@ -94,7 +94,7 @@ export default class StatBlock {
         }
 
         this.addSenseStrings(input);
-        this.addAllActions(input);
+        this.addActionsAndTraits(input);
         this.applyAdjustments(input);
     }
 
@@ -206,7 +206,8 @@ export default class StatBlock {
         return 8 + this.getAbilityCheck(ability, true);
     }
 
-    public addAllActions(input: InputData) {
+    public addActionsAndTraits(input: InputData) {
+        this.traits = input.traits.map(x => Trait.getHtml(x, this));
         this.actions = input.actions.filter(x => x.actionTime == 'Action').map(x => ActionInput.getHtml(x, this));
         this.bonusActions = input.actions.filter(x => x.actionTime == 'Bonus Action').map(x => ActionInput.getHtml(x, this));
         this.reactions = input.actions.filter(x => x.actionTime == 'Reaction').map(x => ActionInput.getHtml(x, this));
