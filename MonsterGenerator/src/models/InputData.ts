@@ -7,6 +7,7 @@ import { Condition } from '../enums/Conditions';
 import { Sense } from './Sense';
 import { ActionInput } from './ActionInput';
 import { Trait } from './Trait';
+import { Ability } from '../enums/Ability';
 
 export default class InputData {
     public name: string = '';
@@ -34,6 +35,27 @@ export default class InputData {
     public traits: Trait[] = [];
     public actions: ActionInput[] = [];
 
-    public hpMod: number = 0;
-    public acMod: number = 0;
+    public hpMult: number = 1;
+    public acMult: number = 1;
+
+    public statMods:
+        {
+            strMod: number,
+            dexMod: number,
+            conMod: number,
+            intMod: number,
+            wisMod: number,
+            chaMod: number,
+        };
+
+    constructor() {
+        this.statMods = {
+            strMod: 0,
+            dexMod: 0,
+            conMod: 0,
+            intMod: 0,
+            wisMod: 0,
+            chaMod: 0,
+        };
+    }
 }

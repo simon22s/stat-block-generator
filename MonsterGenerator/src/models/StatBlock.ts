@@ -48,8 +48,8 @@ export default class StatBlock {
         const profBonus = Math.floor(1 + (input.level + 3) / 4);
         this.name = input.name;
         this.level = input.level;
-        this.hp = 16 + (input.level * 7) + input.hpMod;
-        this.armorClass = Math.floor(12 + (input.level / 4) + input.acMod);
+        this.hp = 16 + (input.level * 7);
+        this.armorClass = Math.floor(12 + (input.level / 4));
         this.profBonus = profBonus;
         this.speed = 30;
         this.atkDamage = input.level * 3;
@@ -95,6 +95,7 @@ export default class StatBlock {
 
         this.addSenseStrings(input);
         this.addAllActions(input);
+        this.applyAdjustments(input);
     }
 
     private adjustStatBlockForRank(rank: Rank) {
@@ -233,5 +234,17 @@ export default class StatBlock {
                 return this.chaMod;
                 break;
         }
+    }
+
+    private applyAdjustments(input: InputData) {
+        this.hp = Math.max(Math.round(this.hp * input.hpMult), 1);
+        this.armorClass = Math.max(Math.round(this.armorClass * input.acMult), 1);
+
+        this.strMod = Math.max(this.strMod + input.statMods.strMod, 1);
+        this.dexMod = Math.max(this.dexMod + input.statMods.dexMod, 1);
+        this.conMod = Math.max(this.conMod + input.statMods.conMod, 1);
+        this.intMod = Math.max(this.intMod + input.statMods.intMod, 1);
+        this.wisMod = Math.max(this.wisMod + input.statMods.wisMod, 1);
+        this.chaMod = Math.max(this.chaMod + input.statMods.chaMod, 1);
     }
 }

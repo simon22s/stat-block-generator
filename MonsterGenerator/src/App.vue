@@ -203,14 +203,48 @@
                                 <v-expansion-panel title="Adjustments">
                                     <v-expansion-panel-text>
                                         <v-row>
-                                            <v-span>HP Modifier </v-span>
-                                            <v-text-field v-model="hpMod" type="number" hide-details>
-                                            </v-text-field>
+                                            <v-span>HP Multiplier </v-span>
+                                            <v-slider v-model="hpMult" :min="0.01" :max="10.00" :step="0.01" hide-details>
+                                                <template v-slot:append>
+                                                    <v-text-field v-model="hpMult" type="number" hide-details>
+                                                    </v-text-field>
+                                                </template>
+                                            </v-slider>
                                         </v-row>
                                         <v-row>
-                                            <v-span>AC Modifier </v-span>
-                                            <v-text-field v-model="acMod" type="number" hide-details>
-                                            </v-text-field>
+                                            <v-span>AC Multiplier </v-span>
+                                            <v-slider v-model="acMult" :min="0.01" :max="10.00" :step="0.01" hide-details>
+                                                <template v-slot:append>
+                                                    <v-text-field v-model="acMult" type="number" hide-details>
+                                                    </v-text-field>
+                                                </template>
+                                            </v-slider>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <v-text-field v-model ="strMod" type="number" :step="1" hide-details>
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col>
+                                                <v-text-field v-model ="dexMod" type="number" :step="1" hide-details>
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col>
+                                                <v-text-field v-model ="conMod" type="number" :step="1" hide-details>
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col>
+                                                <v-text-field v-model ="intMod" type="number" :step="1" hide-details>
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col>
+                                                <v-text-field v-model ="wisMod" type="number" :step="1" hide-details>
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col>
+                                                <v-text-field v-model ="chaMod" type="number" :step="1" hide-details>
+                                                </v-text-field>
+                                            </v-col>
                                         </v-row>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
@@ -299,8 +333,14 @@ export default defineComponent({
             senses: [],
             traits: [],
             actions: [],
-            hpMod: 0,
-            acMod: 0
+            hpMult: 1,
+            acMult: 1,
+            strMod: 0,
+            dexMod: 0,
+            conMod: 0,
+            intMod: 0,
+            wisMod: 0,
+            chaMod: 0
         }
     },
     computed: {
@@ -325,9 +365,17 @@ export default defineComponent({
             curr.conditionImmunities = this.conditionImmunities;
             curr.senses = this.senses;
             curr.traits = this.traits;
-            curr.hpMod = +this.hpMod;
-            curr.acMod = +this.acMod;
+            curr.hpMult = +this.hpMult;
+            curr.acMult = +this.acMult;
             curr.actions = this.actions;
+            curr.statMods = {
+                strMod: +this.strMod,
+                dexMod: +this.dexMod,
+                conMod: +this.conMod,
+                intMod: +this.intMod,
+                wisMod: +this.wisMod,
+                chaMod: +this.chaMod,
+            };
             return curr;
         },
         currentInputJson() {
@@ -470,8 +518,8 @@ export default defineComponent({
             this.senses = [];
             newInput.senses.forEach(x => (this.senses as Sense[]).push(new Sense(x.senseType, x.distance)));
             (this.traits as Trait[]) = newInput.traits;
-            this.hpMod = +newInput.hpMod;
-            this.acMod = +newInput.acMod;
+            this.hpMult = +newInput.hpMult;
+            this.acMult = +newInput.acMult;
             (this.actions as ActionInput[]) = newInput.actions;
         }
     }
