@@ -221,6 +221,15 @@
                                             </v-slider>
                                         </v-row>
                                         <v-row>
+                                            <v-span>Damage Multiplier </v-span>
+                                            <v-slider v-model="dmgMult" :min="0.01" :max="10.00" :step="0.01" hide-details>
+                                                <template v-slot:append>
+                                                    <v-text-field v-model="dmgMult" type="number" hide-details>
+                                                    </v-text-field>
+                                                </template>
+                                            </v-slider>
+                                        </v-row>
+                                        <v-row>
                                             <v-col>
                                                 <v-text-field v-model ="strMod" type="number" :step="1" hide-details>
                                                 </v-text-field>
@@ -335,6 +344,7 @@ export default defineComponent({
             actions: [],
             hpMult: 1,
             acMult: 1,
+            dmgMult: 1,
             strMod: 0,
             dexMod: 0,
             conMod: 0,
@@ -367,6 +377,7 @@ export default defineComponent({
             curr.traits = this.traits;
             curr.hpMult = +this.hpMult;
             curr.acMult = +this.acMult;
+            curr.dmgMult = +this.dmgMult;
             curr.actions = this.actions;
             curr.statMods = {
                 strMod: +this.strMod,

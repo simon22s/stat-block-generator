@@ -22,7 +22,7 @@
             <v-text-field v-if="isAttackAction" v-model="damageMult" type="number" :step="0.01" hide-details>
             </v-text-field>
             <v-combobox v-if="isAttackAction" v-model="damageType" :items="damageItems"></v-combobox>
-            <v-text-field v-model="effectText"></v-text-field>
+            <v-textarea v-model="effectText"></v-textarea>
         </v-card-text>
         <v-card-actions>
             <v-btn text="Cancel" @click="cancel"></v-btn>

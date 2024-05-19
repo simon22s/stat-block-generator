@@ -17,7 +17,7 @@ export default class SnippetInterpreter {
         const fullDmgExp = /{{dmgMod:.*}}/;
         while (result.indexOf(startOfDmgExp) >= 0 && result.indexOf(endOfDmgExp) > 0) {
             const dmgExpIndex = result.indexOf(startOfDmgExp);
-            const endOfDmgExpIndex = result.indexOf(endOfDmgExp);
+            const endOfDmgExpIndex = dmgExpIndex + result.substring(dmgExpIndex).indexOf(endOfDmgExp);    // find the next closing braces
             const dmgMult = Number(result.substring(dmgExpIndex + startOfDmgExp.length, endOfDmgExpIndex));
 
             if (dmgMult) {

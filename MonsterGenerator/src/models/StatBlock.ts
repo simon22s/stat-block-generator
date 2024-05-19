@@ -82,6 +82,7 @@ export default class StatBlock {
     private calcStatBlock(input: InputData) {
         this.adjustStatBlockForRank(input.rank);
         this.adjustStatBlockForRole(input.role);
+        this.applyAdjustments(input);
         
         for (let i = 0; i < input.trainedSavingThrows.length; i++) {
             const ability: Ability = Ability[input.trainedSavingThrows[i] as keyof typeof Ability];
@@ -95,7 +96,6 @@ export default class StatBlock {
 
         this.addSenseStrings(input);
         this.addActionsAndTraits(input);
-        this.applyAdjustments(input);
     }
 
     private adjustStatBlockForRank(rank: Rank) {
@@ -240,6 +240,7 @@ export default class StatBlock {
     private applyAdjustments(input: InputData) {
         this.hp = Math.max(Math.round(this.hp * input.hpMult), 1);
         this.armorClass = Math.max(Math.round(this.armorClass * input.acMult), 1);
+        this.atkDamage = Math.max(Math.round(this.atkDamage * input.dmgMult), 1);
 
         this.strMod = Math.max(this.strMod + input.statMods.strMod, 1);
         this.dexMod = Math.max(this.dexMod + input.statMods.dexMod, 1);

@@ -1,7 +1,7 @@
 <template>
     <v-card class="pa-8 mb-8" :title="cardTitle">
         <v-card-text>
-            <v-text-field v-model="currJson"></v-text-field>
+            <v-textarea v-model="currJson"></v-textarea>
         </v-card-text>
         <v-card-actions>
             <v-btn text="Cancel" @click="cancel"></v-btn>

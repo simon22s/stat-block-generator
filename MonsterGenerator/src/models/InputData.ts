@@ -37,6 +37,7 @@ export default class InputData {
 
     public hpMult: number = 1;
     public acMult: number = 1;
+    public dmgMult: number = 1;
 
     public statMods:
         {

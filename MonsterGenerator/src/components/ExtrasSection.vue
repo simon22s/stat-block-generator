@@ -41,7 +41,7 @@
               </span>
           </v-row>
           <v-row v-if="statBlock.conditionImmunities.length > 0">
-              <span class="mr-1 font-weight-bold">Damage Resistances</span>
+              <span class="mr-1 font-weight-bold">Condition Immunities</span>
               <span v-for="(condition, index) in statBlock.conditionImmunities"
                     :key="condition"
                     class="mr-1">
