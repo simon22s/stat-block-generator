@@ -1,6 +1,6 @@
 <template>
-    <v-container v-if="statBlock">
-        <v-table>
+    <v-container v-if="statBlock" class="pa-0 border-t-md">
+        <v-table class="ability-score-table">
             <thead>
                 <tr>
                     <th class="text-center">
@@ -72,18 +72,10 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.ability-score-table {
+    background-color: #fce5cd;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+th{
+    border: none !important;
 }
 </style>

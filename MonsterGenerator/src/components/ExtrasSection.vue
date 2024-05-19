@@ -1,5 +1,5 @@
 <template>
-      <v-container>
+      <v-container  class="py-4 border-t-md">
           <v-row v-if="statBlock.trainedSavingThrows.length > 0">
               <span class="mr-1 font-weight-bold">Saving Throws</span>
               <span v-for="(savingThrow, index) in statBlock.trainedSavingThrows" 

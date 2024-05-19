@@ -6,6 +6,7 @@
                 <v-radio label="General" value="General"></v-radio>
             </v-radio-group>
             <v-text-field v-model="actionName"></v-text-field>
+            <v-combobox v-model="actionTime" :items="actionTimes"></v-combobox>
             <v-combobox v-if="isAttackAction" v-model="attackStat" :items="attackStatItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
             <v-radio-group v-if="isAttackAction" v-model="attackRange">
                 <v-radio label="Melee" value="Melee"></v-radio>

@@ -1,9 +1,9 @@
 <template>
-  <v-card v-if="currStatBlock">
+  <v-card v-if="currStatBlock" class="stat-block-card">
       <v-container>
           <v-row>
-              <v-col class="text-left">
-                  <span>{{currStatBlock.name}}</span>
+              <v-col class="text-left pa-0">
+                  <span class="stat-block-name">{{currStatBlock.name}}</span>
               </v-col>
           </v-row>
           <v-row>
@@ -70,6 +70,7 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 h3 {
   margin: 40px 0 0;
 }
@@ -83,5 +84,15 @@ li {
 }
 a {
   color: #42b983;
+}
+.stat-block-card{
+    background-color: #fce5cd;
+    font-family: "Montserrat", sans-serif !important;
+    padding: 0;
+}
+.stat-block-name{
+    font-variant: small-caps;
+    font-size: 32px;
+    font-weight: 700;
 }
 </style>

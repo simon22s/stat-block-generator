@@ -1,39 +1,40 @@
 <template>
-      <v-container v-if="statBlock">
-            <v-row>
-                <v-col class="text-left">
-                    <span>Level {{statBlock.level}}</span>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="text-left">
-                    <span class="mr-1 font-weight-bold">Armor Class</span>
-                    <span>{{statBlock.armorClass}}</span>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="text-left">
-                    <span class="mr-1 font-weight-bold">HP</span>
-                    <span>{{statBlock.hp}}</span>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="text-left">
-                    <span class="mr-1 font-weight-bold">Speed</span>
-                    <span>{{statBlock.speed}} ft.</span>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="text-left">
-                    <span class="mr-1 font-weight-bold">Recommended DMG Per Action</span>
-                    <span>{{statBlock.atkDamage}}</span>
-                </v-col>
-                <v-col class="text-right">
-                    <span class="mr-1 font-weight-bold">Proficiency Bonus</span>
-                    <span>+{{statBlock.profBonus}}</span>
-                </v-col>
-            </v-row>
-      </v-container>
+    <v-container v-if="statBlock" class="px-0 py-4 border-t-md">
+        <v-row>
+            <v-col class="py-0 text-left">
+                <span class="mr-1 font-weight-bold">Armor Class</span>
+                <span>{{statBlock.armorClass}}</span>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col class="py-0 text-left">
+                <span class="mr-1 font-weight-bold">HP</span>
+                <span>{{statBlock.hp}}</span>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col class="py-0 text-left">
+                <span class="mr-1 font-weight-bold">Speed</span>
+                <span>{{statBlock.speed}} ft.</span>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col class="py-0 text-left">
+                <span class="mr-1 font-weight-bold">Level</span>
+                <span>{{statBlock.level}}</span>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col class="py-0 text-left">
+                <span class="mr-1 font-weight-bold">Recommended DMG Per Action</span>
+                <span>{{statBlock.atkDamage}}</span>
+            </v-col>
+            <v-col class="py-0 text-right">
+                <span class="mr-1 font-weight-bold">Proficiency Bonus</span>
+                <span>+{{statBlock.profBonus}}</span>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script lang="ts">
