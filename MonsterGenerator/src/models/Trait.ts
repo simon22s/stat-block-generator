@@ -9,7 +9,7 @@ export class Trait {
     public static getHtml(trait: Trait, statBlock: StatBlock): StatBlockHtmlEntry {
         return {
             name: trait.name,
-            htmlText: `<b>${trait.name} </b>${SnippetInterpreter.interpretEffectTextSnippets(trait.description, statBlock)}`
+            htmlText: `<b>${trait.name}. </b>${SnippetInterpreter.interpretEffectTextSnippets(trait.description, statBlock)}`
         }
     }
 }

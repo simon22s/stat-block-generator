@@ -1,5 +1,5 @@
-export type DamageType = 'Acid' | 'Cold' | 'Fire' | 'Force' | 'Lightning' | 'Necrotic' | 'Poison' | 'Radiant' |
+export type DamageType = 'Acid' | 'Cold' | 'Fire' | 'Force' | 'Lightning' | 'Necrotic' | 'Poison' | 'Radiant' | 'Thunder' |
     'Bludgeoning' | 'Piercing' | 'Slashing' | 'Bludgeoning from Nonmagical' | 'Piercing from Nonmagical' | 'Slashing from Nonmagical';
 
-export const DamageTypes = ['Acid', 'Cold', 'Fire', 'Force', 'Lightning', 'Necrotic', 'Poison', 'Radiant',
+export const DamageTypes = ['Acid', 'Cold', 'Fire', 'Force', 'Lightning', 'Necrotic', 'Poison', 'Radiant', 'Thunder',
     'Bludgeoning', 'Piercing', 'Slashing', 'Bludgeoning from Nonmagical', 'Piercing from Nonmagical', 'Slashing from Nonmagical'];

@@ -5,9 +5,9 @@
                 <v-radio label="Attack" value="Attack"></v-radio>
                 <v-radio label="General" value="General"></v-radio>
             </v-radio-group>
-            <v-text-field v-model="actionName"></v-text-field>
-            <v-combobox v-model="actionTime" :items="actionTimes"></v-combobox>
-            <v-combobox v-if="isAttackAction" v-model="attackStat" :items="attackStatItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
+            <v-text-field v-model="actionName" label="Name"></v-text-field>
+            <v-combobox v-model="actionTime" label="Action Time" :items="actionTimes"></v-combobox>
+            <v-combobox v-if="isAttackAction" v-model="attackStat" label="Ability to Use" :items="attackStatItems" item-value="value" item-title="text" :return-object="false"></v-combobox>
             <v-radio-group v-if="isAttackAction" v-model="attackRange">
                 <v-radio label="Melee" value="Melee"></v-radio>
                 <v-radio label="Ranged" value="Ranged"></v-radio>
@@ -16,13 +16,13 @@
                 <v-radio label="Weapon" value="Weapon"></v-radio>
                 <v-radio label="Spell" value="Spell"></v-radio>
             </v-radio-group>
-            <v-text-field v-if="isAttackAction" v-model="range" type="number" :step="5" hide-details>
+            <v-text-field v-if="isAttackAction" v-model="range" label="Attack Range"  type="number" :step="5" hide-details>
             </v-text-field>
             <v-checkbox v-if="isAttackAction" v-model="isProficient" label="Is Proficient"></v-checkbox>
-            <v-text-field v-if="isAttackAction" v-model="damageMult" type="number" :step="0.01" hide-details>
+            <v-text-field v-if="isAttackAction" v-model="damageMult" label="Damage Multiplier" type="number" :step="0.01" hide-details>
             </v-text-field>
             <v-combobox v-if="isAttackAction" v-model="damageType" :items="damageItems"></v-combobox>
-            <v-textarea v-model="effectText"></v-textarea>
+            <v-textarea v-model="effectText" label="Additional Effect"></v-textarea>
         </v-card-text>
         <v-card-actions>
             <v-btn text="Cancel" @click="cancel"></v-btn>

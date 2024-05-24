@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="statBlock" class="px-0 py-4 border-t-md">
+    <v-container v-if="statBlock" class="px-0 py-4 use-separator-color border-t-md">
         <v-row>
             <v-col class="py-0 text-left">
                 <span class="mr-1 font-weight-bold">Armor Class</span>
@@ -25,7 +25,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="py-0 text-left">
+            <v-col class="py-0 text-left" cols="8">
                 <span class="mr-1 font-weight-bold">Recommended DMG Per Action</span>
                 <span>{{statBlock.atkDamage}}</span>
             </v-col>
@@ -55,18 +55,7 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.v-container.use-separator-color {
+    border-color: rgb(var(--v-theme-separatorColor)) !important;
 }
 </style>

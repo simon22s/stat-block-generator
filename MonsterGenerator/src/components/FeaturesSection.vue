@@ -1,7 +1,7 @@
 <template>
       <v-container v-if="featuresList.length > 0">
-          <v-row v-if="sectionName != ''">
-            <p class="text-h6">{{sectionName}}</p>
+          <v-row class="section-name border-b-sm use-separator-color">
+            <p v-if="sectionName != ''" class="text-h6">{{sectionName}}</p>
           </v-row>
           <v-row v-for="feature in featuresList" :key="feature">
                 <p v-html="feature.htmlText" class="text-left"></p>
@@ -31,18 +31,15 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.section-name{
+    font-variant: small-caps;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.use-separator-color {
+    border-color: rgb(var(--v-theme-separatorColor)) !important;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+p.text-h6{
+    font-family: "Montserrat", sans-serif !important;
 }
 </style>

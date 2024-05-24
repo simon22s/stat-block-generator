@@ -11,7 +11,7 @@
                                     <v-text-field v-model="name" label="Name">
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="4">
+                                <v-col cols="2">
                                     <v-dialog max-width="500">
                                         <template v-slot:activator="{ props: activatorProps }">
                                             <v-btn v-bind="activatorProps"
@@ -22,6 +22,9 @@
                                             <SerializationModal :inputJson="currentInputJson" @saveJson="onSaveJson" @closeModal="isActive.value = false"></SerializationModal>
                                         </template>
                                     </v-dialog>
+                                </v-col>
+                                <v-col cols="2">
+                                    <SaveToImageButton></SaveToImageButton>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -282,6 +285,7 @@ import GeneratedOutput from './components/GeneratedOutput.vue';
 import CustomizableList from './components/CustomizableList.vue';
 import SenseEditor from './components/SenseEditor.vue';
 import SerializationModal from './components/SerializationModal.vue';
+import SaveToImageButton from './components/Buttons/SaveToImageButton.vue';
 import { Skill, Skills } from './enums/Skill';
 import { DamageType, DamageTypes } from './enums/DamageType';
 import { Condition, Conditions } from './enums/Conditions';
@@ -295,7 +299,8 @@ export default defineComponent({
         ThreatCalculator,
         SenseEditor,
         CustomizableList,
-        SerializationModal
+        SerializationModal,
+        SaveToImageButton
     },
     data() {
         return {
@@ -531,7 +536,14 @@ export default defineComponent({
             (this.traits as Trait[]) = newInput.traits;
             this.hpMult = +newInput.hpMult;
             this.acMult = +newInput.acMult;
+            this.dmgMult = +newInput.dmgMult;
             (this.actions as ActionInput[]) = newInput.actions;
+            this.strMod = +newInput.statMods.strMod;
+            this.dexMod = +newInput.statMods.dexMod;
+            this.conMod = +newInput.statMods.conMod;
+            this.intMod = +newInput.statMods.intMod;
+            this.wisMod = +newInput.statMods.wisMod;
+            this.chaMod = +newInput.statMods.chaMod;
         }
     }
 });

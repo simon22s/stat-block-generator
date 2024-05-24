@@ -1,24 +1,24 @@
 <template>
-    <v-container v-if="statBlock" class="pa-0 border-t-md">
+    <v-container v-if="statBlock" class="pa-0 border-t-md use-separator-color">
         <v-table class="ability-score-table">
             <thead>
                 <tr>
-                    <th class="text-center">
+                    <th class="text-center font-weight-bold">
                         STR
                     </th>
-                    <th class="text-center">
+                    <th class="text-center font-weight-bold">
                         DEX
                     </th>
-                    <th class="text-center">
+                    <th class="text-center font-weight-bold">
                         CON
                     </th>
-                    <th class="text-center">
+                    <th class="text-center font-weight-bold">
                         INT
                     </th>
-                    <th class="text-center">
+                    <th class="text-center font-weight-bold">
                         WIS
                     </th>
-                    <th class="text-center">
+                    <th class="text-center font-weight-bold">
                         CHA
                     </th>
                 </tr>
@@ -73,9 +73,18 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .ability-score-table {
-    background-color: #fce5cd;
 }
 th{
     border: none !important;
+    height: 0px !important;
+    padding: 4px !important;
+}
+td{
+    height: 0px !important;
+    padding: 4px !important;
+}
+
+.use-separator-color {
+    border-color: rgb(var(--v-theme-separatorColor)) !important;
 }
 </style>

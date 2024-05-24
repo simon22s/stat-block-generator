@@ -21,7 +21,7 @@ export class ActionInput {
         } else {
             return {
                 name: action.name,
-                htmlText: `<b>${action.name} </b>` + SnippetInterpreter.interpretEffectTextSnippets(action.effectText, statBlock)
+                htmlText: `<b>${action.name}. </b>` + SnippetInterpreter.interpretEffectTextSnippets(action.effectText, statBlock)
             }
         }
     }
@@ -45,7 +45,7 @@ export class AttackActionInput extends ActionInput {
 
         return {
             name: action.name,
-            htmlText: `<b>${action.name} </b><i>${action.attackRange} ${action.attackType} attack:</i> +${toHit} to hit, reach ${action.range} ft. one target. Hit: ${damageValue} (${damageText}) ${action.damageType.toLowerCase()} damage. ${SnippetInterpreter.interpretEffectTextSnippets(action.effectText, statBlock)}`
+            htmlText: `<b>${action.name}. </b><i>${action.attackRange} ${action.attackType} attack:</i> +${toHit} to hit, reach ${action.range} ft. one target. Hit: ${damageValue} (${damageText}) ${action.damageType.toLowerCase()} damage. ${SnippetInterpreter.interpretEffectTextSnippets(action.effectText, statBlock)}`
         }
     }
 }

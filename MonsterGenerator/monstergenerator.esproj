@@ -12,6 +12,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\plugins\" />
     <Folder Include="src\services\" />
   </ItemGroup>
 </Project>

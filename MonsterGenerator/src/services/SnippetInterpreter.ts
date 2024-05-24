@@ -14,7 +14,7 @@ export default class SnippetInterpreter {
 
         const startOfDmgExp = '{{dmgMod:';
         const endOfDmgExp = '}}';
-        const fullDmgExp = /{{dmgMod:.*}}/;
+        const fullDmgExp = /{{dmgMod:\d*\.?\d*}}/;
         while (result.indexOf(startOfDmgExp) >= 0 && result.indexOf(endOfDmgExp) > 0) {
             const dmgExpIndex = result.indexOf(startOfDmgExp);
             const endOfDmgExpIndex = dmgExpIndex + result.substring(dmgExpIndex).indexOf(endOfDmgExp);    // find the next closing braces

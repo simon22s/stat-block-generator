@@ -1,6 +1,7 @@
 import { Ability } from '../enums/Ability'
 import { AbilityLevel } from '../enums/AbilityLevel';
 import { CombatRole } from '../enums/CombatRole';
+import { DamageType, DamageTypes } from '../enums/DamageType';
 import { Rank } from '../enums/Rank';
 import { SkillToAbilityMap } from '../enums/Skill';
 import { ActionInput } from './ActionInput';
@@ -48,7 +49,7 @@ export default class StatBlock {
         const profBonus = Math.floor(1 + (input.level + 3) / 4);
         this.name = input.name;
         this.level = input.level;
-        this.hp = 16 + (input.level * 7);
+        this.hp = 9 + (input.level * 7);
         this.armorClass = Math.floor(12 + (input.level / 4));
         this.profBonus = profBonus;
         this.speed = 30;
@@ -63,9 +64,9 @@ export default class StatBlock {
         this.baseSaveDC = 8 + profBonus;
         this.trainedSavingThrows = [];
         this.skills = [];
-        this.damageVulnerabilities = input.damageVulnerabilities;
-        this.damageResistances = input.damageResistances;
-        this.damageImmunities = input.damageImmunities;
+        this.damageVulnerabilities = [];
+        this.damageResistances = [];
+        this.damageImmunities = [];
         this.conditionImmunities = input.conditionImmunities;
         this.senses = [];
         this.traits = [];
@@ -94,19 +95,19 @@ export default class StatBlock {
             this.skills.push(input.skills[i] + '+' + this.getAbilityCheck(ability, true));
         }
 
+        this.processExtraStrings(input);
         this.addSenseStrings(input);
         this.addActionsAndTraits(input);
     }
 
     private adjustStatBlockForRank(rank: Rank) {
+        this.hp = Math.floor(this.hp * this.threat);
         switch (rank) {
             case (Rank.Minion):
-                this.hp * Math.floor(this.hp * 0.2);
                 this.atkDamage * Math.floor(this.atkDamage * 0.75);
                 break;
             case (Rank.Elite):
                 this.armorClass += 1;
-                this.hp *= 2;
                 this.strMod += 1;
                 this.dexMod += 1;
                 this.conMod += 1;
@@ -117,7 +118,6 @@ export default class StatBlock {
                 break;
             case (Rank.Paragon):
                 this.armorClass += 2;
-                this.hp = Math.floor(this.hp * this.threat);
                 this.strMod += 2;
                 this.dexMod += 2;
                 this.conMod += 2;
@@ -242,11 +242,34 @@ export default class StatBlock {
         this.armorClass = Math.max(Math.round(this.armorClass * input.acMult), 1);
         this.atkDamage = Math.max(Math.round(this.atkDamage * input.dmgMult), 1);
 
-        this.strMod = Math.max(this.strMod + input.statMods.strMod, 1);
-        this.dexMod = Math.max(this.dexMod + input.statMods.dexMod, 1);
-        this.conMod = Math.max(this.conMod + input.statMods.conMod, 1);
-        this.intMod = Math.max(this.intMod + input.statMods.intMod, 1);
-        this.wisMod = Math.max(this.wisMod + input.statMods.wisMod, 1);
-        this.chaMod = Math.max(this.chaMod + input.statMods.chaMod, 1);
+        this.strMod = Math.max(this.strMod + input.statMods.strMod, -5);
+        this.dexMod = Math.max(this.dexMod + input.statMods.dexMod, -5);
+        this.conMod = Math.max(this.conMod + input.statMods.conMod, -5);
+        this.intMod = Math.max(this.intMod + input.statMods.intMod, -5);
+        this.wisMod = Math.max(this.wisMod + input.statMods.wisMod, -5);
+        this.chaMod = Math.max(this.chaMod + input.statMods.chaMod, -5);
+    }
+
+    private processExtraStrings(input: InputData) {
+        this.damageResistances = this.accumulatePhysicalDamageStrings(input.damageResistances);
+        this.damageVulnerabilities = this.accumulatePhysicalDamageStrings(input.damageVulnerabilities);
+        this.damageImmunities = this.accumulatePhysicalDamageStrings(input.damageImmunities);
+    }
+
+    private accumulatePhysicalDamageStrings(typeStrings: DamageType[]): string[] {
+        const physDamageStrings = typeStrings.filter(x => this.isPhysicalNonmagicalDamageType(x)).map(x => x.toLowerCase());
+        const nonphysDamageStrings = typeStrings.filter(x => !this.isPhysicalNonmagicalDamageType(x)).map(x => x.toLowerCase());
+
+        if (physDamageStrings.length > 0) {
+            return nonphysDamageStrings.map((x, index) => index < nonphysDamageStrings.length - 1 ? x + ', ' : x + '; ')
+                .concat(physDamageStrings.map((x, index) => index < physDamageStrings.length - 1 ? x.split(' ')[0] + ', ' : x.split(' ')[0] + ' from non-magical damage'))
+                .map(x => x.toLowerCase());
+        } else {
+            return typeStrings.map((x, index) => index < typeStrings.length - 1 ? x + ', ' : x).map(x => x.toLowerCase());
+        }
+    }
+
+    private isPhysicalNonmagicalDamageType(damageType: DamageType): boolean{
+        return damageType == 'Bludgeoning from Nonmagical' || damageType == 'Piercing from Nonmagical' || damageType == 'Slashing from Nonmagical';
     }
 }

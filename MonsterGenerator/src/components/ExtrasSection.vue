@@ -1,5 +1,5 @@
 <template>
-      <v-container  class="py-4 border-t-md">
+      <v-container  class="py-4 border-t-md use-separator-color">
           <v-row v-if="statBlock.trainedSavingThrows.length > 0">
               <span class="mr-1 font-weight-bold">Saving Throws</span>
               <span v-for="(savingThrow, index) in statBlock.trainedSavingThrows" 
@@ -18,26 +18,26 @@
           </v-row>
           <v-row v-if="statBlock.damageVulnerabilities.length > 0">
               <span class="mr-1 font-weight-bold">Damage Vulnerabilities</span>
-              <span v-for="(damageVuln, index) in statBlock.damageVulnerabilities"
+              <span v-for="(damageVuln) in statBlock.damageVulnerabilities"
                     :key="damageVuln"
                     class="mr-1">
-                  {{damageVuln}}{{index + 1 != statBlock.damageVulnerabilities.length ? ', ' : ''}}
+                  {{damageVuln}}
               </span>
           </v-row>
           <v-row v-if="statBlock.damageResistances.length > 0">
               <span class="mr-1 font-weight-bold">Damage Resistances</span>
-              <span v-for="(damageRes, index) in statBlock.damageResistances"
+              <span v-for="(damageRes) in statBlock.damageResistances"
                     :key="damageRes"
                     class="mr-1">
-                  {{damageRes}}{{index + 1 != statBlock.damageResistances.length ? ', ' : ''}}
+                  {{damageRes}}
               </span>
           </v-row>
           <v-row v-if="statBlock.damageImmunities.length > 0">
               <span class="mr-1 font-weight-bold">Damage Immunities</span>
-              <span v-for="(damageImm, index) in statBlock.damageImmunities"
+              <span v-for="(damageImm) in statBlock.damageImmunities"
                     :key="damageImm"
                     class="mr-1">
-                  {{damageImm}}{{index + 1 != statBlock.damageImmunities.length ? ', ' : ''}}
+                  {{damageImm}}
               </span>
           </v-row>
           <v-row v-if="statBlock.conditionImmunities.length > 0">
@@ -45,7 +45,7 @@
               <span v-for="(condition, index) in statBlock.conditionImmunities"
                     :key="condition"
                     class="mr-1">
-                  {{condition}}{{index + 1 != statBlock.conditionImmunities.length ? ', ' : ''}}
+                  {{condition.toLowerCase()}}{{index + 1 != statBlock.conditionImmunities.length ? ', ' : ''}}
               </span>
           </v-row>
           <v-row v-if="statBlock.senses.length > 0">
@@ -53,7 +53,7 @@
               <span v-for="(sense, index) in statBlock.senses"
                     :key="sense"
                     class="mr-1">
-                  {{sense}}{{index + 1 != statBlock.senses.length ? ', ' : ''}}
+                  {{sense.toLowerCase()}}{{index + 1 != statBlock.senses.length ? ', ' : ''}}
               </span>
           </v-row>
       </v-container>
@@ -90,5 +90,9 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.use-separator-color {
+    border-color: rgb(var(--v-theme-separatorColor)) !important;
 }
 </style>

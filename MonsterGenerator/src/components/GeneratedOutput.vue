@@ -1,39 +1,41 @@
 <template>
-  <v-card v-if="currStatBlock" class="stat-block-card">
-      <v-container>
-          <v-row>
-              <v-col class="text-left pa-0">
-                  <span class="stat-block-name">{{currStatBlock.name}}</span>
-              </v-col>
-          </v-row>
-          <v-row>
-              <BasicInfoSection :statBlock="currStatBlock">
-              </BasicInfoSection>
-          </v-row>
-          <v-row>
-              <AbilityScoreTable :statBlock="currStatBlock">
-              </AbilityScoreTable>
-          </v-row>
-          <v-row>
-              <ExtrasSection :statBlock="currStatBlock"></ExtrasSection>
-          </v-row>
-          <v-row>
-              <FeaturesSection :featuresList="currStatBlock.traits"></FeaturesSection>
-          </v-row>
-          <v-row>
-              <FeaturesSection :featuresList="currStatBlock.actions" :sectionName="'Actions'"></FeaturesSection>
-          </v-row>
-          <v-row>
-              <FeaturesSection :featuresList="currStatBlock.bonusActions" :sectionName="'Bonus Actions'"></FeaturesSection>
-          </v-row>
-          <v-row>
-              <FeaturesSection :featuresList="currStatBlock.reactions" :sectionName="'Reactions'"></FeaturesSection>
-          </v-row>
-          <v-row>
-              <FeaturesSection :featuresList="currStatBlock.villainActions" :sectionName="'Villain Actions'"></FeaturesSection>
-          </v-row>
-      </v-container>
-  </v-card>
+    <v-theme-provider theme="statBlockTenkan">
+        <v-card v-if="currStatBlock" id="generated-stat-block" class="stat-block-card border-t-lg border-b-lg">
+            <v-container>
+                <v-row>
+                    <v-col class="text-left pa-0">
+                        <span class="stat-block-name">{{currStatBlock.name}}</span>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <BasicInfoSection :statBlock="currStatBlock">
+                    </BasicInfoSection>
+                </v-row>
+                <v-row>
+                    <AbilityScoreTable :statBlock="currStatBlock">
+                    </AbilityScoreTable>
+                </v-row>
+                <v-row>
+                    <ExtrasSection :statBlock="currStatBlock"></ExtrasSection>
+                </v-row>
+                <v-row>
+                    <FeaturesSection :featuresList="currStatBlock.traits"></FeaturesSection>
+                </v-row>
+                <v-row>
+                    <FeaturesSection :featuresList="currStatBlock.actions" :sectionName="'Actions'"></FeaturesSection>
+                </v-row>
+                <v-row>
+                    <FeaturesSection :featuresList="currStatBlock.bonusActions" :sectionName="'Bonus Actions'"></FeaturesSection>
+                </v-row>
+                <v-row>
+                    <FeaturesSection :featuresList="currStatBlock.reactions" :sectionName="'Reactions'"></FeaturesSection>
+                </v-row>
+                <v-row>
+                    <FeaturesSection :featuresList="currStatBlock.villainActions" :sectionName="'Villain Actions'"></FeaturesSection>
+                </v-row>
+            </v-container>
+        </v-card>
+    </v-theme-provider>
 </template>
 
 <script lang="ts">
@@ -86,8 +88,8 @@ a {
   color: #42b983;
 }
 .stat-block-card{
-    background-color: #fce5cd;
     font-family: "Montserrat", sans-serif !important;
+    font-size: 14px !important;
     padding: 0;
 }
 .stat-block-name{
