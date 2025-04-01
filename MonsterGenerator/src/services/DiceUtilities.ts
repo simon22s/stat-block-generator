@@ -2,7 +2,7 @@ export default class DiceUtilities {
     public static diceSizes = [4, 6, 8, 10, 12];
     public static getDamageRollTextForAverageDamageValue(damage: number, relevantAbilityStatMod: number) {
         const damageToCalc = damage - relevantAbilityStatMod;
-        let currBestDiceSize = 4;
+        let currBestDiceSize = 12;
         let numDiceShouldBeFloor = false;
         for (let i = this.diceSizes.length - 2; i >= 0; i--) {
             const avgValueOfBest = this.getAverageValueOfDiceSize(currBestDiceSize);
@@ -24,6 +24,13 @@ export default class DiceUtilities {
             relevantAbilityStatMod += Math.round((numDiceNeeded - 12) * this.getAverageValueOfDiceSize(currBestDiceSize));
             numDiceNeeded = 12;
         }
+
+        if (numDiceNeeded > currBestDiceSize && this.diceSizes.findIndex(x => x == numDiceNeeded) >= 0) {
+            const temp = numDiceNeeded;
+            numDiceNeeded = currBestDiceSize;
+            currBestDiceSize = temp;
+        }
+
         const abilityText = relevantAbilityStatMod > 0 ? ` + ${relevantAbilityStatMod}` : '';
         return `${numDiceNeeded}d${currBestDiceSize}${abilityText}`;
     }

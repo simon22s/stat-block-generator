@@ -39,6 +39,8 @@ export default class InputData {
     public acMult: number = 1;
     public dmgMult: number = 1;
 
+    public versionNumber: number = 0;
+
     public statMods:
         {
             strMod: number,

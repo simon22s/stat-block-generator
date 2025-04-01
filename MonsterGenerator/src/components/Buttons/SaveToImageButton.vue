@@ -1,7 +1,6 @@
 <template>
     <v-btn @click="save">
-        <v-icon end
-                icon="mdi-pencil"></v-icon>
+        <v-icon icon="mdi-image"></v-icon>
         </v-btn>
 </template>
 

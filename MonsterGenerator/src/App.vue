@@ -15,7 +15,7 @@
                                     <v-dialog max-width="500">
                                         <template v-slot:activator="{ props: activatorProps }">
                                             <v-btn v-bind="activatorProps"
-                                                   text="Save/Load">
+                                                   icon="mdi-content-save-edit">
                                             </v-btn>
                                         </template>
                                         <template v-slot:default="{ isActive }">
@@ -392,6 +392,7 @@ export default defineComponent({
                 wisMod: +this.wisMod,
                 chaMod: +this.chaMod,
             };
+            curr.versionNumber = 1;
             return curr;
         },
         currentInputJson() {

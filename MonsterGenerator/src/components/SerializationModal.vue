@@ -14,7 +14,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'SenseEditor',
+  name: 'SerializationModal',
   props: {
       inputJson: {
           type: String,
