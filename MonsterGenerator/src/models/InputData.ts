@@ -8,13 +8,16 @@ import { Sense } from './Sense';
 import { ActionInput } from './ActionInput';
 import { Trait } from './Trait';
 import { Ability } from '../enums/Ability';
+import { ArmorInput } from './ArmorInput';
 
 export default class InputData {
     public name: string = '';
     public level: number = 1;
-    public role: CombatRole = CombatRole.None;
     public rank: Rank = Rank.Grunt;
     public threatLevel: number = 1;
+    public creatureType: string = 'Humanoid';
+
+    public armor: ArmorInput = new ArmorInput();
 
     public strPref: AbilityLevel = AbilityLevel.High;
     public dexPref: AbilityLevel = AbilityLevel.High;
@@ -36,10 +39,8 @@ export default class InputData {
     public actions: ActionInput[] = [];
 
     public hpMult: number = 1;
-    public acMult: number = 1;
+    public acBonus: number = 0;
     public dmgMult: number = 1;
-
-    public versionNumber: number = 0;
 
     public statMods:
         {

@@ -16,7 +16,7 @@
                 <v-radio label="Weapon" value="Weapon"></v-radio>
                 <v-radio label="Spell" value="Spell"></v-radio>
             </v-radio-group>
-            <v-text-field v-if="isAttackAction" v-model="range" label="Attack Range"  type="number" :step="5" hide-details>
+            <v-text-field v-if="isAttackAction" v-model="range" label="Reach"  type="number" :step="5" hide-details>
             </v-text-field>
             <v-checkbox v-if="isAttackAction" v-model="isProficient" label="Is Proficient"></v-checkbox>
             <v-text-field v-if="isAttackAction" v-model="damageMult" label="Damage Multiplier" type="number" :step="0.01" hide-details>
@@ -60,10 +60,10 @@ export default defineComponent({
             attackStat: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).attackStat : Ability.Strength,
             attackRange: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).attackRange : 'Melee',
             attackType: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).attackType : 'Weapon',
-            range: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).range : 5,
+            reach: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).reach : 5,
             isProficient: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).isProficient : true,
-            damageMult: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).damageMult : 1,
-            damageType: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).damageType : 'Bludgeoning',
+            damageMult: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).baseDamage.damageMult : 1,
+            damageType: !this.isAddingItem && this.existingItem && this.existingItem.actionType == 'Attack' ? (this.existingItem! as AttackActionInput).baseDamage.damageType : 'Bludgeoning',
             attackStatItems: [
                 { value: Ability.Strength, text: 'Strength' },
                 { value: Ability.Dexterity, text: 'Dexterity' },
@@ -98,7 +98,7 @@ export default defineComponent({
                         attackStat: this.attackStat,
                         attackRange: this.attackRange,
                         attackType: this.attackType,
-                        range: this.range,
+                        reach: this.reach,
                         isProficient: this.isProficient,
                         damageMult: this.damageMult,
                         damageType: this.damageType,
@@ -121,10 +121,10 @@ export default defineComponent({
                     (this.existingItem! as AttackActionInput).attackStat = this.attackStat;
                     (this.existingItem! as AttackActionInput).attackRange = this.attackRange;
                     (this.existingItem! as AttackActionInput).attackType = this.attackType;
-                    (this.existingItem! as AttackActionInput).range = this.range;
+                    (this.existingItem! as AttackActionInput).reach = this.reach;
                     (this.existingItem! as AttackActionInput).isProficient = this.isProficient;
-                    (this.existingItem! as AttackActionInput).damageMult = this.damageMult;
-                    (this.existingItem! as AttackActionInput).damageType = this.damageType;
+                    (this.existingItem! as AttackActionInput).baseDamage.damageMult = this.damageMult;
+                    (this.existingItem! as AttackActionInput).baseDamage.damageType = this.damageType;
                 }
             }
             this.$emit('closeEditor');

@@ -38,9 +38,8 @@
                                     </v-slider>
                                 </v-col>
                                 <v-col cols="4">
-                                    <span>Role</span>
-                                    <v-combobox v-model="role" :items="roleItems" item-value="value" item-title="text" :return-object="false">
-                                    </v-combobox>
+                                    <v-text-field v-model="creatureType" label="Creature Type">
+                                    </v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -60,6 +59,21 @@
                                 </v-col>
                             </v-row>
                             <v-expansion-panels>
+                                <v-expansion-panel title="Armor">
+                                    <v-expansion-panel-text>
+                                        <v-row>
+                                            <v-checkbox v-model="armorIncludesDex" label="Include DEX"></v-checkbox>
+                                        </v-row>
+                                        <v-row>
+                                            <v-slider v-model="armorValue" :min="1" :max="50" :step="1" hide-details>
+                                                <template v-slot:append>
+                                                    <v-text-field v-model="armorValue" type="number" hide-details>
+                                                    </v-text-field>
+                                                </template>
+                                            </v-slider>
+                                        </v-row>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
                                 <v-expansion-panel title="Abilities & Saving Throws">
                                     <v-expansion-panel-text>
                                         <v-table>
@@ -215,10 +229,10 @@
                                             </v-slider>
                                         </v-row>
                                         <v-row>
-                                            <v-span>AC Multiplier </v-span>
-                                            <v-slider v-model="acMult" :min="0.01" :max="10.00" :step="0.01" hide-details>
+                                            <v-span>AC Bonus </v-span>
+                                            <v-slider v-model="acBonus" :min="0" :max="20" :step="1" hide-details>
                                                 <template v-slot:append>
-                                                    <v-text-field v-model="acMult" type="number" hide-details>
+                                                    <v-text-field v-model="acBonus" type="number" hide-details>
                                                     </v-text-field>
                                                 </template>
                                             </v-slider>
@@ -276,7 +290,6 @@
 import { defineComponent } from 'vue';
 import { Ability } from './enums/Ability';
 import { Rank } from './enums/Rank';
-import { CombatRole } from './enums/CombatRole';
 import { AbilityLevel } from './enums/AbilityLevel';
 import InputData from './models/InputData';
 import { Sense } from './models/Sense';
@@ -291,6 +304,7 @@ import { DamageType, DamageTypes } from './enums/DamageType';
 import { Condition, Conditions } from './enums/Conditions';
 import { Trait } from './models/Trait';
 import { ActionInput } from './models/ActionInput';
+import MigrationUtilities from './services/MigrationUtilities';
 
 export default defineComponent({
     name: 'App',
@@ -308,21 +322,14 @@ export default defineComponent({
             level: 1,
             rank: Rank.Grunt,
             threatLevel: 1,
+            creatureType: 'Humanoid',
+            armorIncludesDex: true,
+            armorValue: 10,
             rankItems: [
                 { value: Rank.Minion, text: 'Minion' },
                 { value: Rank.Grunt, text: 'Grunt' },
                 { value: Rank.Elite, text: 'Elite' },
                 { value: Rank.Paragon, text: 'Paragon' }
-            ],
-            role: CombatRole.None,
-            roleItems: [
-                { value: CombatRole.None, text: 'None' },
-                { value: CombatRole.Controller, text: 'Controller' },
-                { value: CombatRole.Defender, text: 'Defender' },
-                { value: CombatRole.Lurker, text: 'Lurker' },
-                { value: CombatRole.Skirmisher, text: 'Skirmisher' },
-                { value: CombatRole.Striker, text: 'Striker' },
-                { value: CombatRole.Supporter, text: 'Supporter' },
             ],
             strAttr: AbilityLevel.High,
             dexAttr: AbilityLevel.High,
@@ -348,7 +355,7 @@ export default defineComponent({
             traits: [],
             actions: [],
             hpMult: 1,
-            acMult: 1,
+            acBonus: 0,
             dmgMult: 1,
             strMod: 0,
             dexMod: 0,
@@ -363,8 +370,10 @@ export default defineComponent({
             const curr = new InputData();
             curr.name = this.name;
             curr.level = +this.level;
-            curr.role = this.role;
             curr.rank = this.rank;
+            curr.armor.armorBehavior = this.armorIncludesDex ? 'IncludeDex' : 'ExcludeDex';
+            curr.armor.armorValue = this.armorValue;
+            curr.creatureType = this.creatureType;
             curr.strPref = this.strAttr;
             curr.dexPref = this.dexAttr;
             curr.conPref = this.conAttr;
@@ -381,7 +390,7 @@ export default defineComponent({
             curr.senses = this.senses;
             curr.traits = this.traits;
             curr.hpMult = +this.hpMult;
-            curr.acMult = +this.acMult;
+            curr.acBonus = +this.acBonus;
             curr.dmgMult = +this.dmgMult;
             curr.actions = this.actions;
             curr.statMods = {
@@ -392,7 +401,6 @@ export default defineComponent({
                 wisMod: +this.wisMod,
                 chaMod: +this.chaMod,
             };
-            curr.versionNumber = 1;
             return curr;
         },
         currentInputJson() {
@@ -410,14 +418,6 @@ export default defineComponent({
                 case Rank.Elite:
                 case Rank.Paragon:
                     baseSavingThrows = 3;
-                    break;
-            }
-            switch (this.role) {
-                case CombatRole.Defender:
-                    baseSavingThrows += 1;
-                    break;
-                case CombatRole.Lurker:
-                    baseSavingThrows -= 1;
                     break;
             }
             return baseSavingThrows;
@@ -454,9 +454,6 @@ export default defineComponent({
                     this.threatLevel = 2;
                     break;
             }
-            this.updateSelectedSaves();
-        },
-        role() {
             this.updateSelectedSaves();
         },
         selectedSaves() {
@@ -512,12 +509,10 @@ export default defineComponent({
             }
         },
         onSaveJson(json: string) {
-            console.log(json);
-            const newInput: InputData = JSON.parse(json);
-            console.log(newInput);
+            const newInput: InputData = MigrationUtilities.LoadJson(json);
+
             this.name = newInput.name;
             this.level = +newInput.level;
-            this.role = newInput.role;
             this.rank = newInput.rank;
             this.strAttr = newInput.strPref;
             this.dexAttr = newInput.dexPref;
@@ -536,7 +531,7 @@ export default defineComponent({
             newInput.senses.forEach(x => (this.senses as Sense[]).push(new Sense(x.senseType, x.distance)));
             (this.traits as Trait[]) = newInput.traits;
             this.hpMult = +newInput.hpMult;
-            this.acMult = +newInput.acMult;
+            this.acBonus = +newInput.acBonus;
             this.dmgMult = +newInput.dmgMult;
             (this.actions as ActionInput[]) = newInput.actions;
             this.strMod = +newInput.statMods.strMod;

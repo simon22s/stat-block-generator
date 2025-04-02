@@ -1,6 +1,5 @@
 import { Ability } from '../enums/Ability'
 import { AbilityLevel } from '../enums/AbilityLevel';
-import { CombatRole } from '../enums/CombatRole';
 import { DamageType, DamageTypes } from '../enums/DamageType';
 import { Rank } from '../enums/Rank';
 import { SkillToAbilityMap } from '../enums/Skill';
@@ -50,7 +49,7 @@ export default class StatBlock {
         this.name = input.name;
         this.level = input.level;
         this.hp = 9 + (input.level * 7);
-        this.armorClass = Math.floor(12 + (input.level / 4));
+        this.armorClass = input.armor.armorValue + input.acBonus;
         this.profBonus = profBonus;
         this.speed = 30;
         this.atkDamage = input.level * 3;
@@ -82,8 +81,8 @@ export default class StatBlock {
 
     private calcStatBlock(input: InputData) {
         this.adjustStatBlockForRank(input.rank);
-        this.adjustStatBlockForRole(input.role);
         this.applyAdjustments(input);
+        this.adjustArmorClass(input);
         
         for (let i = 0; i < input.trainedSavingThrows.length; i++) {
             const ability: Ability = Ability[input.trainedSavingThrows[i] as keyof typeof Ability];
@@ -107,7 +106,6 @@ export default class StatBlock {
                 this.atkDamage * Math.floor(this.atkDamage * 0.75);
                 break;
             case (Rank.Elite):
-                this.armorClass += 1;
                 this.strMod += 1;
                 this.dexMod += 1;
                 this.conMod += 1;
@@ -117,7 +115,6 @@ export default class StatBlock {
                 this.atkDamage * Math.floor(this.atkDamage * 1.1);
                 break;
             case (Rank.Paragon):
-                this.armorClass += 2;
                 this.strMod += 2;
                 this.dexMod += 2;
                 this.conMod += 2;
@@ -125,41 +122,6 @@ export default class StatBlock {
                 this.wisMod += 2;
                 this.chaMod += 2;
                 this.atkDamage * Math.floor(this.atkDamage * 1.2);
-                break;
-        }
-    }
-
-    private adjustStatBlockForRole(role: CombatRole) {
-        switch (role) {
-            case CombatRole.Controller:
-                this.armorClass += 2;
-                this.atkDamage = Math.floor(this.atkDamage * 0.75);
-                break;
-            case CombatRole.Defender:
-                this.speed -= 5;
-                this.armorClass += 4;
-                this.hp = Math.floor(this.hp * 0.75);
-                this.atkDamage = Math.floor(this.atkDamage * 0.75);
-                break;
-            case CombatRole.Lurker:
-                if (this.senses.findIndex(x => x == 'Stealth') < 0) {
-                    this.senses.push('Stealth');
-                }
-                this.armorClass -= 4;
-                this.hp = Math.floor(this.hp * 0.75);
-                this.atkDamage = Math.floor(this.atkDamage * 1.25);
-                break;
-            case CombatRole.Skirmisher:
-                if (this.senses.findIndex(x => x == 'Perception') < 0) {
-                    this.senses.push('Perception');
-                }
-                this.speed += 5;
-                this.armorClass -= 2;
-                this.hp = Math.floor(this.hp * 0.75);
-                break;
-            case CombatRole.Supporter:
-                this.hp = Math.floor(this.hp * 1.25);
-                this.atkDamage = Math.floor(this.atkDamage * 0.75);
                 break;
         }
     }
@@ -239,7 +201,6 @@ export default class StatBlock {
 
     private applyAdjustments(input: InputData) {
         this.hp = Math.max(Math.round(this.hp * input.hpMult), 1);
-        this.armorClass = Math.max(Math.round(this.armorClass * input.acMult), 1);
         this.atkDamage = Math.max(Math.round(this.atkDamage * input.dmgMult), 1);
 
         this.strMod = Math.max(this.strMod + input.statMods.strMod, -5);
@@ -271,5 +232,11 @@ export default class StatBlock {
 
     private isPhysicalNonmagicalDamageType(damageType: DamageType): boolean{
         return damageType == 'Bludgeoning from Nonmagical' || damageType == 'Piercing from Nonmagical' || damageType == 'Slashing from Nonmagical';
+    }
+
+    private adjustArmorClass(input: InputData) {
+        if (input.armor.armorBehavior == 'IncludeDex') {
+            this.armorClass += this.dexMod;
+        }
     }
 }
