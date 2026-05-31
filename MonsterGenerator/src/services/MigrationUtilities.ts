@@ -1,8 +1,11 @@
 import { Condition } from "../enums/Conditions";
-import { DamageType } from "../enums/DamageType";
+import { DamageType, DamageTypes } from "../enums/DamageType";
 import { Skill } from "../enums/Skill";
-import { ActionInput, AttackActionInput } from "../models/ActionInput";
+import { ActionInput, AttackActionInput, GeneralActionInput } from "../models/ActionInput";
+import { ArmorInput } from "../models/ArmorInput";
+import { DamageInstance } from "../models/DamageInstance";
 import InputData from "../models/InputData";
+import { SavingThrowEffect } from "../models/SavingThrowEffect";
 import { Sense } from "../models/Sense";
 import { Trait } from "../models/Trait";
 
@@ -44,6 +47,13 @@ export default class MigrationUtilities {
         result.statMods.wisMod = +parsedJson.statMods.wisMod;
         result.statMods.chaMod = +parsedJson.statMods.chaMod;
 
+        if (parsedJson.armor) {
+            result.armor = new ArmorInput();
+            result.armor.armorBehavior = parsedJson.armor.armorBehavior;
+            result.armor.armorValue = parsedJson.armor.armorValue;
+            result.armor.description = parsedJson.armor.description;
+        }
+
         return result;
     }
 
@@ -51,22 +61,41 @@ export default class MigrationUtilities {
         if (json.actionType == 'Attack') {
             const result = new AttackActionInput();
 
+            result.name = json.name;
             result.attackStat = json.attackStat;
             result.attackRange = json.attackRange;
-            result.attackType = json.attackStat;
+            result.attackType = json.attackType;
             result.reach = json.reach ? json.reach : json.range;
             result.closeRange = json.closeRange ?? 0;
             result.farRange = json.farRange ?? 0;
             result.isProficient = json.isProficient;
-            result.baseDamage = json.baseDamage ? json.baseDamage : {
-                damageType: json.damageType,
-                damageMult: json.damageMult,
-            };
+            result.baseDamage = new DamageInstance('Bludgeoning', 1.0);
+            if (json.baseDamage) {
+                result.baseDamage.damageType = json.baseDamage.damageType;
+                result.baseDamage.damageMult = json.baseDamage.damageMult;
+            } else {
+                result.baseDamage.damageType = json.damageType;
+                result.baseDamage.damageMult = json.damageMult;
+            }
             result.bonusDamages = json.bonusDamages ?? [];
             return result;
         }
         else {
-            return json as ActionInput;
+            const result = new GeneralActionInput();
+            result.name = json.name;
+            result.actionTime = json.actionTime;
+            result.isIncludedInMultiattack = json.isIncludedInMultiattack;
+            result.effectText = json.effectText;
+            if (result.savingThrowEffect) {
+                result.savingThrowEffect = new SavingThrowEffect();
+                result.savingThrowEffect.savingThrowType = json.savingThrowEffect.savingThrowType;
+                result.savingThrowEffect.abilityModifier = json.savingThrowEffect.abilityModifier;
+                result.savingThrowEffect.isProficient = json.savingThrowEffect.isProficient;
+                result.savingThrowEffect.targetDescription = json.savingThrowEffect.targetDescription;
+                result.savingThrowEffect.successDescription = json.savingThrowEffect.successDescription;
+                result.savingThrowEffect.failureDescription = json.savingThrowEffect.failureDescription;
+            }
+            return result;
         }
     }
 

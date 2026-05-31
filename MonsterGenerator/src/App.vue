@@ -372,7 +372,7 @@ export default defineComponent({
             curr.level = +this.level;
             curr.rank = this.rank;
             curr.armor.armorBehavior = this.armorIncludesDex ? 'IncludeDex' : 'ExcludeDex';
-            curr.armor.armorValue = this.armorValue;
+            curr.armor.armorValue = +this.armorValue;
             curr.creatureType = this.creatureType;
             curr.strPref = this.strAttr;
             curr.dexPref = this.dexAttr;
@@ -540,6 +540,9 @@ export default defineComponent({
             this.intMod = +newInput.statMods.intMod;
             this.wisMod = +newInput.statMods.wisMod;
             this.chaMod = +newInput.statMods.chaMod;
+
+            this.armorIncludesDex = newInput.armor.armorBehavior == 'IncludeDex';
+            this.armorValue = newInput.armor.armorValue;
         }
     }
 });

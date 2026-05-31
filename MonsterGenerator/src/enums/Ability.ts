@@ -6,3 +6,5 @@ export enum Ability {
     Wisdom,
     Charisma
 }
+
+export const AbilityToStringMap = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma']

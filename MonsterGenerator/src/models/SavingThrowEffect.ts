@@ -1,4 +1,4 @@
-import { Ability } from "../enums/Ability";
+import { Ability, AbilityToStringMap } from "../enums/Ability";
 import SnippetInterpreter from "../services/SnippetInterpreter";
 import StatBlock from "./StatBlock";
 
@@ -11,7 +11,8 @@ export class SavingThrowEffect {
     public failureDescription: string = '';
 
     public getHtmlText(statBlock: StatBlock): string {
-        const templateString = `<i>${this.savingThrowType.toString()} Saving Throw:</i> {{saveDC:${this.abilityModifier.toString().toLowerCase()}}}, ${this.targetDescription}. <i>Failure:</i> ${this.failureDescription}. <i>Success:</i>${this.successDescription}.`;
+        const optionalSuccessText = this.successDescription ? ` <i>Success:</i> ${this.successDescription}` : '';
+        const templateString = `<i>${AbilityToStringMap[this.savingThrowType]} Saving Throw:</i> {{saveDC:${AbilityToStringMap[this.abilityModifier].toLowerCase()}}}, ${this.targetDescription}. <i>Failure:</i> ${this.failureDescription}.${optionalSuccessText}`;
 
         return SnippetInterpreter.interpretEffectTextSnippets(templateString, statBlock);
     }

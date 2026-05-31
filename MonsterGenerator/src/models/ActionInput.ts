@@ -44,7 +44,7 @@ export class AttackActionInput extends ActionInput {
     public closeRange: number = 0;
     public farRange: number = 0;
     public isProficient: boolean = true;
-    public baseDamage: DamageInstance = new DamageInstance();
+    public baseDamage: DamageInstance = new DamageInstance('Bludgeoning', 1.0);
     public bonusDamages: DamageInstance[] = [];
 
     public static getHtml(action: AttackActionInput, statBlock: StatBlock): StatBlockHtmlEntry {
@@ -67,7 +67,7 @@ export class AttackActionInput extends ActionInput {
             effectString += SnippetInterpreter.interpretEffectTextSnippets(action.effectText, statBlock);
         }
         if (action.savingThrowEffect) {
-            effectString += ' ' + action.savingThrowEffect?.getHtmlText(statBlock);
+            effectString += ' ' + action.savingThrowEffect!.getHtmlText(statBlock);
         }
 
         return {
