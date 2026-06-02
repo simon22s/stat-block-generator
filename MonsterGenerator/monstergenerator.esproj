@@ -15,4 +15,7 @@
     <Folder Include="src\plugins\" />
     <Folder Include="src\services\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\workflows\deploy.yml" />
+  </ItemGroup>
 </Project>
