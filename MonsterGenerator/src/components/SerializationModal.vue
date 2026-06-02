@@ -1,35 +1,82 @@
 <template>
     <v-card class="pa-8 mb-8" :title="cardTitle">
-        <v-card-text>
-            <v-textarea v-model="currJson"></v-textarea>
-        </v-card-text>
+        <v-table>
+            <thead>
+                <tr>
+                    <th class="text-left">
+                        Name
+                    </th>
+                    <th class="text-left">
+                        Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in keyDirectory" :key="item.key">
+                    <td>
+                        {{item.displayName}}
+                    </td>
+                    <td>
+                        {{item.date}}
+                    </td>
+                    <td>
+                        <v-btn @click="loadData(item.key)"
+                               icon="mdi-reload">
+                        </v-btn>
+                    </td>
+                    <td>
+                        <v-btn @click="overwriteData(item.key)"
+                               icon="mdi-content-save-edit">
+                        </v-btn>
+                    </td>
+                    <td>
+                        <v-btn @click="deleteData(item.key)"
+                               icon="mdi-delete">
+                        </v-btn>
+                    </td>
+                </tr>
+            </tbody>
+        </v-table>
         <v-card-actions>
             <v-btn text="Cancel" @click="cancel"></v-btn>
-            <v-btn text="Overwrite" @click="save"></v-btn>
+            <v-btn text="Save to New Slot" @click="saveData"></v-btn>
         </v-card-actions>
     </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import InputData from '../models/InputData';
+import SerializationUtilities from '../services/SerializationUtilities';
 
 export default defineComponent({
   name: 'SerializationModal',
   props: {
-      inputJson: {
-          type: String,
+      input: {
+          type: InputData,
           required: true
       }
     },
     data() {
         return {
-            currJson: this.inputJson
+            keyDirectory: SerializationUtilities.getKeyDirectory()
         }
     },
     methods: {
-        save() {
-            this.$emit('saveJson', this.currJson)
+        saveData() {
+            SerializationUtilities.saveStatBlock(crypto.randomUUID(), this.input);
+            this.keyDirectory = SerializationUtilities.getKeyDirectory();
+        },
+        overwriteData(key: string) {
+            SerializationUtilities.saveStatBlock(key, this.input);
+            this.keyDirectory = SerializationUtilities.getKeyDirectory();
+        },
+        loadData(key: string) {
+            this.$emit('loadData', SerializationUtilities.getStatBlockFromLocalStorage(key));
             this.$emit('closeModal');
+        },
+        deleteData(key: string) {
+            SerializationUtilities.removeStatBlockFromLocalStorage(key);
         },
         cancel() {
             this.$emit('closeModal');

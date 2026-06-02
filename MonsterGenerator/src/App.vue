@@ -19,7 +19,7 @@
                                             </v-btn>
                                         </template>
                                         <template v-slot:default="{ isActive }">
-                                            <SerializationModal :inputJson="currentInputJson" @saveJson="onSaveJson" @closeModal="isActive.value = false"></SerializationModal>
+                                            <SerializationModal :input="currentInput" @loadData="onLoadData" @closeModal="isActive.value = false"></SerializationModal>
                                         </template>
                                     </v-dialog>
                                 </v-col>
@@ -304,7 +304,6 @@ import { DamageType, DamageTypes } from './enums/DamageType';
 import { Condition, Conditions } from './enums/Conditions';
 import { Trait } from './models/Trait';
 import { ActionInput } from './models/ActionInput';
-import MigrationUtilities from './services/MigrationUtilities';
 
 export default defineComponent({
     name: 'App',
@@ -402,9 +401,6 @@ export default defineComponent({
                 chaMod: +this.chaMod,
             };
             return curr;
-        },
-        currentInputJson() {
-            return JSON.stringify(this.currentInput);
         },
         isThreatLevelDisabled() {
             return this.rank != Rank.Paragon;
@@ -508,9 +504,7 @@ export default defineComponent({
                 this.senses.splice(index, 1);
             }
         },
-        onSaveJson(json: string) {
-            const newInput: InputData = MigrationUtilities.LoadJson(json);
-
+        onLoadData(newInput: InputData) {
             this.name = newInput.name;
             this.level = +newInput.level;
             this.rank = newInput.rank;
