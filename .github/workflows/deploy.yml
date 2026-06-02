@@ -27,20 +27,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-cache: 'npm'
-          
-      - name: Switch to correct directory
-        run: cd MonsterGenerator
+          cache-dependency-path: ./MonsterGenerator/package-lock.json
 
       - name: Install dependencies
+        working-directory: ./MonsterGenerator
         run: npm ci
 
       - name: Build project
+        working-directory: ./MonsterGenerator
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./MonsterGenerator/dist
 
       - name: Deploy to GitHub Pages
         id: deployment
