@@ -1,5 +1,6 @@
 import InputData from "../models/InputData";
 import { SerializationInfo } from "../models/SerializationInfo";
+import MigrationUtilities from "./MigrationUtilities";
 
 export default class SerializationUtilities {
     private static keyDirectoryKey = 'stat_block_keys';
@@ -27,7 +28,7 @@ export default class SerializationUtilities {
 
     public static getStatBlockFromLocalStorage(key: string): InputData {
         const json = localStorage.getItem(key);
-        return json ? JSON.parse(json) as InputData : new InputData();
+        return json ? MigrationUtilities.LoadJson(json) : new InputData();
     }
 
     public static getKeyDirectory(): SerializationInfo[] {
@@ -41,6 +42,10 @@ export default class SerializationUtilities {
     }
 
     public static removeStatBlockFromLocalStorage(key: string) {
+        let keyDirectory = this.getKeyDirectory();
+        keyDirectory = keyDirectory.filter(x => x.key != key);
+
+        localStorage.setItem(SerializationUtilities.keyDirectoryKey, JSON.stringify(keyDirectory));
         localStorage.removeItem(key);
     }
     

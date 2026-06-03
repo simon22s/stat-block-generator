@@ -83,6 +83,7 @@ export default defineComponent({
         },
         deleteData(key: string) {
             SerializationUtilities.removeStatBlockFromLocalStorage(key);
+            this.keyDirectory = SerializationUtilities.getKeyDirectory();
         },
         cancel() {
             this.$emit('closeModal');
