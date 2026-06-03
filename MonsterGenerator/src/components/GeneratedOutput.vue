@@ -1,5 +1,5 @@
 <template>
-    <v-theme-provider theme="statBlockTenkan">
+    <v-theme-provider theme="statBlock">
         <v-card v-if="currStatBlock" id="generated-stat-block" class="stat-block-card border-t-lg border-b-lg">
             <v-container>
                 <v-row>
