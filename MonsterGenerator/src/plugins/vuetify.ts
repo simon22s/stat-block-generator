@@ -10,6 +10,7 @@ const vuetify = createVuetify({
     components,
     directives,
     theme: {
+        defaultTheme: 'system',
         themes: {
             statBlock: {
                 colors: {
