@@ -9,6 +9,9 @@
                     <th class="text-left">
                         Date
                     </th>
+                    <th style="width: 10px; min-width: 10px;"/>
+                    <th style="width: 10px; min-width: 10px;"/>
+                    <th style="width: 10px; min-width: 10px;"/>
                 </tr>
             </thead>
             <tbody>
@@ -17,21 +20,24 @@
                         {{item.displayName}}
                     </td>
                     <td>
-                        {{item.date}}
+                        {{displayDate(item.date)}}
                     </td>
                     <td>
                         <v-btn @click="loadData(item.key)"
-                               icon="mdi-reload">
+                               icon="mdi-download"
+                               variant="plain">
                         </v-btn>
                     </td>
                     <td>
                         <v-btn @click="overwriteData(item.key)"
-                               icon="mdi-content-save-edit">
+                               icon="mdi-content-save-edit"
+                               variant="plain">
                         </v-btn>
                     </td>
                     <td>
                         <v-btn @click="deleteData(item.key)"
-                               icon="mdi-delete">
+                               icon="mdi-delete"
+                               variant="plain">
                         </v-btn>
                     </td>
                 </tr>
@@ -80,6 +86,9 @@ export default defineComponent({
         },
         cancel() {
             this.$emit('closeModal');
+        },
+        displayDate(input: Date) {
+            return input.toLocaleDateString('en-US');
         }
     }
 });

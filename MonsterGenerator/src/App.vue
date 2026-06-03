@@ -12,7 +12,7 @@
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-dialog max-width="500">
+                                    <v-dialog max-width="700">
                                         <template v-slot:activator="{ props: activatorProps }">
                                             <v-btn v-bind="activatorProps"
                                                    icon="mdi-content-save-edit">

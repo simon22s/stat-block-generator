@@ -1,6 +1,5 @@
 import InputData from "../models/InputData";
 import { SerializationInfo } from "../models/SerializationInfo";
-import StatBlock from "../models/StatBlock";
 
 export default class SerializationUtilities {
     private static keyDirectoryKey = 'stat_block_keys';
@@ -35,7 +34,7 @@ export default class SerializationUtilities {
         const keyDirectoryString = localStorage.getItem(SerializationUtilities.keyDirectoryKey);
 
         if (keyDirectoryString) {
-            return JSON.parse(keyDirectoryString) as SerializationInfo[];
+            return JSON.parse(keyDirectoryString, this.dateReviver) as SerializationInfo[];
         } else {
             return [];
         }
@@ -43,5 +42,14 @@ export default class SerializationUtilities {
 
     public static removeStatBlockFromLocalStorage(key: string) {
         localStorage.removeItem(key);
+    }
+    
+    private static dateReviver(key: string, value: any) {
+        const isoDateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?(?:Z|[+-]\d{2}:?\d{2})?$/;
+
+        if (typeof value === 'string' && isoDateFormat.test(value)) {
+            return new Date(value);
+        }
+        return value;
     }
 }
